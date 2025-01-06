@@ -23,7 +23,18 @@ core gameplay loop:
      spells will have different elements that they can make use of for damaging, inflicting status, and/or reduction/enchancement of player/enemy wizard stats/status similar to move pool in pokemon
      spell language creation should be a reasonable challenge with the real difficulty being individual spell balancing
       - unsure if this should be done via limiting number of characters/blocks in a given spell, limiting big O complexity, limiting number of comparisons / iteraions? leaning on that last one as must likely path
-      
+
+
+  CURRENT SPELL BALANCING APPROACH:
+    each player has can write as many spells as they like which are all stored in their grimoire, but they can only bring ten spells to a battle in their battle tome
+    through out a game each players battle tome is viable by the other
+    each turn has the following loop: mana recovery, move player wizard(or pass), select spell to cast(or pass)
+    each player starts with X mana
+    to cast a particular spell costs Y mana, the amount of mana it costs is determined from the Big O complexity of the spell, in the spell creation menu players can either see Big O directly or the mana cost and can switch between them
+    there will be various classes of magic, perhaps: fire, ice, rock, dark, teleportation, restoration, enchanting (buffing/debuffing), each of these will have a class (i.e. public, private functions etc) which will have characteristics like initial damage, damage over time, tick damage (for damage for turns after casting), along with availible functions, so for fire think fire.ball, .wall, .blast, .will-o-wisp, etc each with various inputs
+    each class information will obviously be viewable for players and hopefully highlighted in the default spells given at the start of the game
+    if done right the mana balance complexity, reactivity, power, predictability, etc thus not stiflying players abilites to create crazy with the ingame code language while also not breaking the experience for noive coding players, i.e. preventing something like .kill(other player) etc
+    
 
      
   2. battle against other warlocks
