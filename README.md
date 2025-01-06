@@ -1,2 +1,42 @@
 # wizard-Game
 game about programming spells and using them to fight in turn based combat against other players, iphone launch first
+
+general plan:
+will liekly be done primarily in swift, cant use big computer can only use laptop :(
+will need to be done in swift
+understand new iOS and xocde concepts such as but not limited to:
+  creating new projects
+  interface builder
+  debugging tools and simulators
+  niews and view controllers
+  navigation controllers, tab bar controllers, etc UI elements
+  model view controller design pattern
+  spritekit
+  scenekit
+
+game conceptualization:
+core gameplay loop:
+  1. build spells:
+     each player will have a grimoire, a book which can hold 10 or so (that number is flexible) of spells
+     there will likely be a few generic spells given to the player base at the start of their time with the game, ideally these spells will highly the possibilities of the spell creation engine
+      the game will have a custom coding language which will at least make use of things like variable declaration and initialization, along with if-then blocks for reactive spells, I would like to put in things like iteratiors but those may break the game if unchecked
+     spells will have different elements that they can make use of for damaging, inflicting status, and/or reduction/enchancement of player/enemy wizard stats/status similar to move pool in pokemon
+     spell language creation should be a reasonable challenge with the real difficulty being individual spell balancing
+      - unsure if this should be done via limiting number of characters/blocks in a given spell, limiting big O complexity, limiting number of comparisons / iteraions? leaning on that last one as must likely path
+      
+
+     
+  2. battle against other warlocks
+    at the start of a battle players will be able to view each other grimoires to get a sense of what 
+    handled similar to polytopia in that the game is turned based with each player having 24 hours to take their turn or forfeit the game
+     the game will have each players wizard avatar on a 3x3 grid of spaces, each turn a player can move their wizard to any adacent space and cast a spell onto a space either on their grid or the other players
+     each wizard avatar has 100 health and once that health is gone they lose the game
+
+additional features (immediate):
+  each player has a searchable page where you can add them as a friend, see their friends, and see their grimoire
+
+additional features (far future):
+  players can create schools of wizards, similar to clans in clash of clans, these schools can then compete against each other in tournments or direct head to head battles, players can ahead of their own battle choose to give some of their initial mana pool to other players in their school, meanging that they would start with less than X mana but that other player would start with equally more
+  players will have stats and perhaps even rankings for those who are the most competitive
+  customizable wizards for plays to show off, this would also allow for in game purchases
+  
