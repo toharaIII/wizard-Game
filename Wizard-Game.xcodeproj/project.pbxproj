@@ -8,6 +8,30 @@
 
 /* Begin PBXFileReference section */
 		4BD11DB52D30A14B00E5D356 /* Wizard-Game.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Wizard-Game.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		4BD11DE42D30AD0A00E5D356 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
+		4BD11DE52D30AD1400E5D356 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
+		4BD11DE92D30AD4600E5D356 /* BattleState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BattleState.swift; sourceTree = "<group>"; };
+		4BD11DEA2D30AD4E00E5D356 /* SpellComponent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpellComponent.swift; sourceTree = "<group>"; };
+		4BD11DEB2D30AD5900E5D356 /* Spell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Spell.swift; sourceTree = "<group>"; };
+		4BD11DEC2D30AD6000E5D356 /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
+		4BD11DED2D30AD6A00E5D356 /* UserManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserManager.swift; sourceTree = "<group>"; };
+		4BD11DEF2D30AD7B00E5D356 /* NetworkManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkManager.swift; sourceTree = "<group>"; };
+		4BD11DF02D30AD8300E5D356 /* PythonInterpreter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PythonInterpreter.swift; sourceTree = "<group>"; };
+		4BD11DF12D30ADF200E5D356 /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
+		4BD11DF22D30ADF900E5D356 /* Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
+		4BD11DF72D30AE2E00E5D356 /* MainMenuViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainMenuViewController.swift; sourceTree = "<group>"; };
+		4BD11DF82D30AE3700E5D356 /* MainTabBarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainTabBarController.swift; sourceTree = "<group>"; };
+		4BD11DF92D30AE4700E5D356 /* BattleTomeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BattleTomeViewController.swift; sourceTree = "<group>"; };
+		4BD11DFA2D30AE5400E5D356 /* SpellEditorViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpellEditorViewController.swift; sourceTree = "<group>"; };
+		4BD11DFB2D30AE5E00E5D356 /* GrimoireViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GrimoireViewController.swift; sourceTree = "<group>"; };
+		4BD11DFC2D30AE6A00E5D356 /* MatchMakingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MatchMakingViewController.swift; sourceTree = "<group>"; };
+		4BD11DFD2D30AE7600E5D356 /* GameScene.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameScene.swift; sourceTree = "<group>"; };
+		4BD11DFE2D30AE7E00E5D356 /* BattleViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BattleViewController.swift; sourceTree = "<group>"; };
+		4BD11DFF2D30AE8900E5D356 /* WizardNode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WizardNode.swift; sourceTree = "<group>"; };
+		4BD11E002D30AE9100E5D356 /* GameBoardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameBoardView.swift; sourceTree = "<group>"; };
+		4BD11E012D30AE9900E5D356 /* SpellCardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpellCardView.swift; sourceTree = "<group>"; };
+		4BD11E072D30AEF200E5D356 /* GameConfiguration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameConfiguration.swift; sourceTree = "<group>"; };
+		4BD11E082D30AEFB00E5D356 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
@@ -53,6 +77,11 @@
 		4BD11DA72D30A14A00E5D356 = {
 			isa = PBXGroup;
 			children = (
+				4BD11DDF2D30AA0600E5D356 /* App */,
+				4BD11DE02D30AA0C00E5D356 /* Core */,
+				4BD11DE12D30AA2200E5D356 /* UI */,
+				4BD11DE22D30AA2A00E5D356 /* Resouces */,
+				4BD11DE32D30AA3000E5D356 /* Config */,
 				4BD11DAC2D30A14A00E5D356 /* Wizard-Game Shared */,
 				4BD11DB72D30A14B00E5D356 /* Wizard-Game iOS */,
 				4BD11DB62D30A14B00E5D356 /* Products */,
@@ -65,6 +94,145 @@
 				4BD11DB52D30A14B00E5D356 /* Wizard-Game.app */,
 			);
 			name = Products;
+			sourceTree = "<group>";
+		};
+		4BD11DDF2D30AA0600E5D356 /* App */ = {
+			isa = PBXGroup;
+			children = (
+				4BD11DE42D30AD0A00E5D356 /* AppDelegate.swift */,
+				4BD11DE52D30AD1400E5D356 /* SceneDelegate.swift */,
+			);
+			path = App;
+			sourceTree = "<group>";
+		};
+		4BD11DE02D30AA0C00E5D356 /* Core */ = {
+			isa = PBXGroup;
+			children = (
+				4BD11DE62D30AD2A00E5D356 /* Models */,
+				4BD11DE72D30AD3300E5D356 /* Services */,
+				4BD11DE82D30AD3800E5D356 /* Utils */,
+			);
+			path = Core;
+			sourceTree = "<group>";
+		};
+		4BD11DE12D30AA2200E5D356 /* UI */ = {
+			isa = PBXGroup;
+			children = (
+				4BD11DF62D30AE2600E5D356 /* Main */,
+				4BD11DF52D30AE1F00E5D356 /* Grimoire */,
+				4BD11DF42D30AE1200E5D356 /* Battle */,
+				4BD11DF32D30AE0B00E5D356 /* Components */,
+			);
+			path = UI;
+			sourceTree = "<group>";
+		};
+		4BD11DE22D30AA2A00E5D356 /* Resouces */ = {
+			isa = PBXGroup;
+			children = (
+				4BD11E052D30AECF00E5D356 /* Assets.xcassets */,
+				4BD11E042D30AECB00E5D356 /* Sounds */,
+				4BD11E022D30AEB000E5D356 /* SpellComponents */,
+			);
+			path = Resouces;
+			sourceTree = "<group>";
+		};
+		4BD11DE32D30AA3000E5D356 /* Config */ = {
+			isa = PBXGroup;
+			children = (
+				4BD11E082D30AEFB00E5D356 /* Info.plist */,
+				4BD11E072D30AEF200E5D356 /* GameConfiguration.swift */,
+			);
+			path = Config;
+			sourceTree = "<group>";
+		};
+		4BD11DE62D30AD2A00E5D356 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				4BD11DEC2D30AD6000E5D356 /* User.swift */,
+				4BD11DEB2D30AD5900E5D356 /* Spell.swift */,
+				4BD11DEA2D30AD4E00E5D356 /* SpellComponent.swift */,
+				4BD11DE92D30AD4600E5D356 /* BattleState.swift */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
+		4BD11DE72D30AD3300E5D356 /* Services */ = {
+			isa = PBXGroup;
+			children = (
+				4BD11DF02D30AD8300E5D356 /* PythonInterpreter.swift */,
+				4BD11DEF2D30AD7B00E5D356 /* NetworkManager.swift */,
+				4BD11DED2D30AD6A00E5D356 /* UserManager.swift */,
+			);
+			path = Services;
+			sourceTree = "<group>";
+		};
+		4BD11DE82D30AD3800E5D356 /* Utils */ = {
+			isa = PBXGroup;
+			children = (
+				4BD11DF12D30ADF200E5D356 /* Constants.swift */,
+				4BD11DF22D30ADF900E5D356 /* Extensions.swift */,
+			);
+			path = Utils;
+			sourceTree = "<group>";
+		};
+		4BD11DF32D30AE0B00E5D356 /* Components */ = {
+			isa = PBXGroup;
+			children = (
+				4BD11E012D30AE9900E5D356 /* SpellCardView.swift */,
+				4BD11E002D30AE9100E5D356 /* GameBoardView.swift */,
+				4BD11DFF2D30AE8900E5D356 /* WizardNode.swift */,
+			);
+			path = Components;
+			sourceTree = "<group>";
+		};
+		4BD11DF42D30AE1200E5D356 /* Battle */ = {
+			isa = PBXGroup;
+			children = (
+				4BD11DFE2D30AE7E00E5D356 /* BattleViewController.swift */,
+				4BD11DFD2D30AE7600E5D356 /* GameScene.swift */,
+				4BD11DFC2D30AE6A00E5D356 /* MatchMakingViewController.swift */,
+			);
+			path = Battle;
+			sourceTree = "<group>";
+		};
+		4BD11DF52D30AE1F00E5D356 /* Grimoire */ = {
+			isa = PBXGroup;
+			children = (
+				4BD11DFB2D30AE5E00E5D356 /* GrimoireViewController.swift */,
+				4BD11DFA2D30AE5400E5D356 /* SpellEditorViewController.swift */,
+				4BD11DF92D30AE4700E5D356 /* BattleTomeViewController.swift */,
+			);
+			path = Grimoire;
+			sourceTree = "<group>";
+		};
+		4BD11DF62D30AE2600E5D356 /* Main */ = {
+			isa = PBXGroup;
+			children = (
+				4BD11DF82D30AE3700E5D356 /* MainTabBarController.swift */,
+				4BD11DF72D30AE2E00E5D356 /* MainMenuViewController.swift */,
+			);
+			path = Main;
+			sourceTree = "<group>";
+		};
+		4BD11E022D30AEB000E5D356 /* SpellComponents */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = SpellComponents;
+			sourceTree = "<group>";
+		};
+		4BD11E042D30AECB00E5D356 /* Sounds */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Sounds;
+			sourceTree = "<group>";
+		};
+		4BD11E052D30AECF00E5D356 /* Assets.xcassets */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Assets.xcassets;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */

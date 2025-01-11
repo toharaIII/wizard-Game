@@ -1,0 +1,75 @@
+/Users/treyohara/Desktop/wizard-Game
+├── App
+│   ├── AppDelegate.swift
+│   └── SceneDelegate.swift
+├── Config
+│   ├── GameConfiguration.swift
+│   └── Info.plist
+├── Core
+│   ├── Models
+│   │   ├── BattleState.swift
+│   │   ├── Spell.swift
+│   │   ├── SpellComponent.swift
+│   │   └── User.swift
+│   ├── Services
+│   │   ├── NetworkManager.swift
+│   │   ├── PythonInterpreter.swift
+│   │   ├── SpellValidator.swift
+│   │   └── UserManager.swift
+│   └── Utils
+│       ├── Constants.swift
+│       └── Extensions.swift
+├── LICENSE
+├── README.md
+├── Resouces
+│   ├── Assets.xcassets
+│   ├── Sounds
+│   └── SpellComponents
+├── UI
+│   ├── Battle
+│   │   ├── BattleViewController.swift
+│   │   ├── GameScene.swift
+│   │   └── MatchMakingViewController.swift
+│   ├── Components
+│   │   ├── GameBoardView.swift
+│   │   ├── SpellCardView.swift
+│   │   └── WizardNode.swift
+│   ├── Grimoire
+│   │   ├── BattleTomeViewController.swift
+│   │   ├── GrimoireViewController.swift
+│   │   └── SpellEditorViewController.swift
+│   └── Main
+│       ├── MainMenuViewController.swift
+│       └── MainTabBarController.swift
+├── Wizard-Game Shared
+│   ├── Actions.sks
+│   ├── Assets.xcassets
+│   │   ├── AccentColor.colorset
+│   │   │   └── Contents.json
+│   │   ├── AppIcon.appiconset
+│   │   │   └── Contents.json
+│   │   └── Contents.json
+│   ├── GameScene.sks
+│   └── GameScene.swift
+├── Wizard-Game iOS
+│   ├── AppDelegate.swift
+│   ├── Base.lproj
+│   │   ├── LaunchScreen.storyboard
+│   │   └── Main.storyboard
+│   └── GameViewController.swift
+└── Wizard-Game.xcodeproj
+    ├── project.pbxproj
+    ├── project.xcworkspace
+    │   ├── contents.xcworkspacedata
+    │   ├── xcshareddata
+    │   │   └── swiftpm
+    │   │       └── configuration
+    │   └── xcuserdata
+    │       └── treyohara.xcuserdatad
+    │           └── UserInterfaceState.xcuserstate
+    └── xcuserdata
+        └── treyohara.xcuserdatad
+            └── xcschemes
+                └── xcschememanagement.plist
+
+32 directories, 41 files
