@@ -24,7 +24,7 @@ struct spellEffect{
     var tickDamage: Int=0
     var tiles: [position]
     var duration: Int=1
-    var trigger: triggerType=.immediate
+    var trigger: triggerType = .immediate
     var removeEffects: [String]=[]
     var chainedEffects: [spellEffect]=[]
     var passiveEffect: ((player) -> Void)?
@@ -83,7 +83,7 @@ class spellLibrary{
                 type: .ice,
                 damage: 25,
                 tiles: [tile]+(spreadTiles ?? []),
-                removeEffects:[.fire],
+                removeEffects:["fire"],
                 passiveEffect: {player in player.isImmobalized=true}
             )
         }
@@ -91,10 +91,10 @@ class spellLibrary{
             return spellEffect(
                 type: .ice,
                 damage: 0,
-                tickdamage: 0,
+                tickDamage: 0,
                 tiles: tiles,
                 duration: duration,
-                removeEffects: [.fire],
+                removeEffects: ["fire"],
                 passiveEffect: {player in player.isImmobalized=true}
             )
         }
@@ -109,13 +109,17 @@ class spellLibrary{
         }
     }
     class teleportation{
-        static func teleport(from: position, to: position? =nil, isRandom: Bool, pathEffects: [spellEffect]=[]. destinationEffects: [spellEffect]=[]) -> spellEffect{
+        static func teleport(from: position, to: position? = nil, isRandom: Bool,
+            pathEffects: [spellEffect]=[],
+            destinationEffects: [spellEffect]=[]) -> spellEffect{
             let targetTile: position
-            if
-                isRandom{targetTile=randomTile()
-            else
+            if isRandom{
+                targetTile=randomTile()
+            }
+            else{
                 targetTile = to ?? from
-            let path=calculatePath(from: from, to: targetTile)
+            }
+            let path=calculatePath(from: from, to: targetTile) //need to make this function
             
             return spellEffect(
                 type: .teleportation,
@@ -145,7 +149,7 @@ class spellLibrary{
             return spellEffect(
                 type: .protection,
                 damage: 0,
-                tiles: tile
+                tiles: tile,
                 absorbsNextSpell: true
             )
         }

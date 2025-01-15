@@ -6,7 +6,23 @@
 	objectVersion = 77;
 	objects = {
 
+/* Begin PBXBuildFile section */
+		4B19739B2D387A11005D5F03 /* SpellComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BD11DEA2D30AD4E00E5D356 /* SpellComponent.swift */; };
+		4B19739C2D387A11005D5F03 /* SpellComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BD11DEA2D30AD4E00E5D356 /* SpellComponent.swift */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		4B1973962D387697005D5F03 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 4BD11DA82D30A14A00E5D356 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 4BD11DB42D30A14B00E5D356;
+			remoteInfo = "Wizard-Game iOS";
+		};
+/* End PBXContainerItemProxy section */
+
 /* Begin PBXFileReference section */
+		4B1973922D387697005D5F03 /* spellComponentsTest.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = spellComponentsTest.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		4BD11DB52D30A14B00E5D356 /* Wizard-Game.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Wizard-Game.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		4BD11DE42D30AD0A00E5D356 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		4BD11DE52D30AD1400E5D356 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -35,6 +51,13 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
+		4B19739E2D387A2C005D5F03 /* Exceptions for "spellComponentsTest" folder in "Wizard-Game iOS" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				spellComponentsTest.swift,
+			);
+			target = 4BD11DB42D30A14B00E5D356 /* Wizard-Game iOS */;
+		};
 		4BD11DC62D30A14B00E5D356 /* Exceptions for "Wizard-Game Shared" folder in "Wizard-Game iOS" target */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
@@ -48,6 +71,14 @@
 /* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
+		4B1973932D387697005D5F03 /* spellComponentsTest */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				4B19739E2D387A2C005D5F03 /* Exceptions for "spellComponentsTest" folder in "Wizard-Game iOS" target */,
+			);
+			path = spellComponentsTest;
+			sourceTree = "<group>";
+		};
 		4BD11DAC2D30A14A00E5D356 /* Wizard-Game Shared */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
 			exceptions = (
@@ -64,6 +95,13 @@
 /* End PBXFileSystemSynchronizedRootGroup section */
 
 /* Begin PBXFrameworksBuildPhase section */
+		4B19738F2D387697005D5F03 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		4BD11DB22D30A14B00E5D356 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -84,6 +122,7 @@
 				4BD11DE32D30AA3000E5D356 /* Config */,
 				4BD11DAC2D30A14A00E5D356 /* Wizard-Game Shared */,
 				4BD11DB72D30A14B00E5D356 /* Wizard-Game iOS */,
+				4B1973932D387697005D5F03 /* spellComponentsTest */,
 				4BD11DB62D30A14B00E5D356 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -92,6 +131,7 @@
 			isa = PBXGroup;
 			children = (
 				4BD11DB52D30A14B00E5D356 /* Wizard-Game.app */,
+				4B1973922D387697005D5F03 /* spellComponentsTest.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -238,6 +278,29 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
+		4B1973912D387697005D5F03 /* spellComponentsTest */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 4B1973982D387697005D5F03 /* Build configuration list for PBXNativeTarget "spellComponentsTest" */;
+			buildPhases = (
+				4B19738E2D387697005D5F03 /* Sources */,
+				4B19738F2D387697005D5F03 /* Frameworks */,
+				4B1973902D387697005D5F03 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				4B1973972D387697005D5F03 /* PBXTargetDependency */,
+			);
+			fileSystemSynchronizedGroups = (
+				4B1973932D387697005D5F03 /* spellComponentsTest */,
+			);
+			name = spellComponentsTest;
+			packageProductDependencies = (
+			);
+			productName = spellComponentsTest;
+			productReference = 4B1973922D387697005D5F03 /* spellComponentsTest.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
 		4BD11DB42D30A14B00E5D356 /* Wizard-Game iOS */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = 4BD11DC72D30A14B00E5D356 /* Build configuration list for PBXNativeTarget "Wizard-Game iOS" */;
@@ -270,6 +333,10 @@
 				LastSwiftUpdateCheck = 1610;
 				LastUpgradeCheck = 1610;
 				TargetAttributes = {
+					4B1973912D387697005D5F03 = {
+						CreatedOnToolsVersion = 16.1;
+						TestTargetID = 4BD11DB42D30A14B00E5D356;
+					};
 					4BD11DB42D30A14B00E5D356 = {
 						CreatedOnToolsVersion = 16.1;
 					};
@@ -290,11 +357,19 @@
 			projectRoot = "";
 			targets = (
 				4BD11DB42D30A14B00E5D356 /* Wizard-Game iOS */,
+				4B1973912D387697005D5F03 /* spellComponentsTest */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
+		4B1973902D387697005D5F03 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		4BD11DB32D30A14B00E5D356 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -305,16 +380,72 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
+		4B19738E2D387697005D5F03 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				4B19739C2D387A11005D5F03 /* SpellComponent.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		4BD11DB12D30A14B00E5D356 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				4B19739B2D387A11005D5F03 /* SpellComponent.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
 
+/* Begin PBXTargetDependency section */
+		4B1973972D387697005D5F03 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 4BD11DB42D30A14B00E5D356 /* Wizard-Game iOS */;
+			targetProxy = 4B1973962D387697005D5F03 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
 /* Begin XCBuildConfiguration section */
+		4B1973992D387697005D5F03 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 18.1;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = WizardGaming.spellComponentsTest;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Wizard-Game.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/Wizard-Game";
+			};
+			name = Debug;
+		};
+		4B19739A2D387697005D5F03 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 18.1;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = WizardGaming.spellComponentsTest;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Wizard-Game.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/Wizard-Game";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
 		4BD11DC82D30A14B00E5D356 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -491,6 +622,15 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		4B1973982D387697005D5F03 /* Build configuration list for PBXNativeTarget "spellComponentsTest" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				4B1973992D387697005D5F03 /* Debug */,
+				4B19739A2D387697005D5F03 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 		4BD11DAB2D30A14A00E5D356 /* Build configuration list for PBXProject "Wizard-Game" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
