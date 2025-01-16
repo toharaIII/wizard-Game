@@ -1,28 +1,29 @@
-import Testing
-import Wizard_Game
+import XCTest
 
-struct SpellSystemTests {
-    @Test func testBasicSpellCreation() {
+class SpellSystemTests: XCTestCase {
+    // Test basic spell creation
+    func testBasicSpellCreation() {
         let testPosition = position(x: 0, y: 0)
         
         // Test fire spells
         let fireball = spellLibrary.fire.ball(tile: testPosition)
-        #expect(fireball.type == .fire)
-        #expect(fireball.damage == 50)
-        #expect(fireball.tiles.count == 1)
+        XCTAssertEqual(fireball.type, .fire)
+        XCTAssertEqual(fireball.damage, 50)
+        XCTAssertEqual(fireball.tiles.count, 1)
         
         // Test ice spells
         let icicle = spellLibrary.ice.icicle(tile: testPosition)
-        #expect(icicle.type == .ice)
-        #expect(icicle.damage == 25)
+        XCTAssertEqual(icicle.type, .ice)
+        XCTAssertEqual(icicle.damage, 25)
         
         // Test protection spells
         let ward = spellLibrary.protection.minorWard(tile: testPosition)
-        #expect(ward.type == .protection)
-        #expect(ward.absorbsNextSpell)
+        XCTAssertEqual(ward.type, .protection)
+        XCTAssertTrue(ward.absorbsNextSpell)
     }
     
-    @Test func testSpellChaining() {
+    // Test spell combinations and chaining
+    func testSpellChaining() {
         let testPosition = position(x: 0, y: 0)
         
         // Create a delayed fire spell that chains into an ice spell
@@ -33,27 +34,31 @@ struct SpellSystemTests {
             effects: [iceEffect]
         )
         
-        #expect(delayedFire.chainedEffects.count == 1)
+        XCTAssertEqual(delayedFire.chainedEffects.count, 1)
         if case .delayed(let turns) = delayedFire.trigger {
-            #expect(turns == 2)
+            XCTAssertEqual(turns, 2)
+        } else {
+            XCTFail("Expected delayed trigger")
         }
     }
     
-    @Test func testSpellEffects() {
+    // Test spell effects and duration
+    func testSpellEffects() {
         let testPosition = position(x: 0, y: 0)
         
         // Test Will-o-Wisp duration
         let wisp = spellLibrary.fire.willOWisp(tile: testPosition, duration: 3)
-        #expect(wisp.duration == 3)
-        #expect(wisp.tickDamage == 5)
+        XCTAssertEqual(wisp.duration, 3)
+        XCTAssertEqual(wisp.tickDamage, 5)
         
         // Test Shroud effect stacking
         let shroud = spellLibrary.dark.shroud(tiles: [testPosition], duration: 2)
-        #expect(shroud.canStack)
-        #expect(shroud.restrictVision)
+        XCTAssertTrue(shroud.canStack)
+        XCTAssertTrue(shroud.restrictVision)
     }
     
-    @Test func testTeleportation() {
+    // Test teleportation system
+    func testTeleportation() {
         let startPos = position(x: 0, y: 0)
         let endPos = position(x: 5, y: 5)
         
@@ -63,7 +68,7 @@ struct SpellSystemTests {
             to: endPos,
             isRandom: false
         )
-        #expect(!teleport.isRandom)
+        XCTAssertFalse(teleport.isRandom)
         
         // Test random teleport
         let randomTeleport = spellLibrary.teleportation.teleport(
@@ -71,10 +76,11 @@ struct SpellSystemTests {
             to: nil,
             isRandom: true
         )
-        #expect(randomTeleport.isRandom)
+        XCTAssertTrue(randomTeleport.isRandom)
     }
     
-    @Test func testProtectionEffects() {
+    // Test protection and status effects
+    func testProtectionEffects() {
         let testPosition = position(x: 0, y: 0)
         
         // Test Aegis damage reduction
@@ -83,25 +89,26 @@ struct SpellSystemTests {
             damageReduction: 25,
             effects: []
         )
-        #expect(aegis.damageReduction == 25)
+        XCTAssertEqual(aegis.damageReduction, 25)
         
         // Test Purify targeting
         let purify = spellLibrary.protection.purify(
             tile: testPosition,
             targetClass: .fire
         )
-        #expect(purify.purifyTarget == .fire)
+        XCTAssertEqual(purify.purifyTarget, .fire)
     }
     
-    @Test func testEffectInteractions() {
+    // Test effect removal and interactions
+    func testEffectInteractions() {
         let testPosition = position(x: 0, y: 0)
         
         // Test fire removing ice effects
         let fireball = spellLibrary.fire.ball(tile: testPosition)
-        #expect(fireball.removeEffects.contains("ice"))
+        XCTAssertTrue(fireball.removeEffects.contains("ice"))
         
         // Test mirror reflection
         let mirror = spellLibrary.protection.mirror(tile: testPosition)
-        #expect(mirror.reflectEffect)
+        XCTAssertTrue(mirror.reflectEffect)
     }
 }

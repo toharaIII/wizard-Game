@@ -9,7 +9,7 @@ enum elementType{
 
 enum triggerType{
     case immediate
-    case delayed(turns: int)
+    case delayed(turns: Int)
     case proximity(radius: Int)
 }
 
@@ -114,7 +114,7 @@ class spellLibrary{
             destinationEffects: [spellEffect]=[]) -> spellEffect{
             let targetTile: position
             if isRandom{
-                targetTile=randomTile()
+                targetTile=randomTile() //need to make this function
             }
             else{
                 targetTile = to ?? from
@@ -166,7 +166,7 @@ class spellLibrary{
             return spellEffect(
                 type: .protection,
                 damage: 0,
-                tiles: tiles,
+                tiles: tile,
                 damageReduction: damageReduction,
                 chainedEffects: effects
             )

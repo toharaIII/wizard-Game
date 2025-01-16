@@ -8,7 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		4B19739B2D387A11005D5F03 /* SpellComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BD11DEA2D30AD4E00E5D356 /* SpellComponent.swift */; };
-		4B19739C2D387A11005D5F03 /* SpellComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BD11DEA2D30AD4E00E5D356 /* SpellComponent.swift */; };
+		4B1973A22D388741005D5F03 /* XCTest.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4B1973A12D388741005D5F03 /* XCTest.framework */; platformFilter = ios; };
+		4B1973A32D388760005D5F03 /* XCTest.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4B1973A12D388741005D5F03 /* XCTest.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -23,6 +24,7 @@
 
 /* Begin PBXFileReference section */
 		4B1973922D387697005D5F03 /* spellComponentsTest.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = spellComponentsTest.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		4B1973A12D388741005D5F03 /* XCTest.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XCTest.framework; path = Platforms/iPhoneOS.platform/Developer/Library/Frameworks/XCTest.framework; sourceTree = DEVELOPER_DIR; };
 		4BD11DB52D30A14B00E5D356 /* Wizard-Game.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Wizard-Game.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		4BD11DE42D30AD0A00E5D356 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		4BD11DE52D30AD1400E5D356 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -58,6 +60,13 @@
 			);
 			target = 4BD11DB42D30A14B00E5D356 /* Wizard-Game iOS */;
 		};
+		4B19739F2D3882C0005D5F03 /* Exceptions for "spellComponentsTest" folder in "spellComponentsTest" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				spellComponentsTest.swift,
+			);
+			target = 4B1973912D387697005D5F03 /* spellComponentsTest */;
+		};
 		4BD11DC62D30A14B00E5D356 /* Exceptions for "Wizard-Game Shared" folder in "Wizard-Game iOS" target */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
@@ -75,6 +84,7 @@
 			isa = PBXFileSystemSynchronizedRootGroup;
 			exceptions = (
 				4B19739E2D387A2C005D5F03 /* Exceptions for "spellComponentsTest" folder in "Wizard-Game iOS" target */,
+				4B19739F2D3882C0005D5F03 /* Exceptions for "spellComponentsTest" folder in "spellComponentsTest" target */,
 			);
 			path = spellComponentsTest;
 			sourceTree = "<group>";
@@ -99,6 +109,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				4B1973A22D388741005D5F03 /* XCTest.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -106,12 +117,21 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				4B1973A32D388760005D5F03 /* XCTest.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		4B1973A02D388741005D5F03 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				4B1973A12D388741005D5F03 /* XCTest.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 		4BD11DA72D30A14A00E5D356 = {
 			isa = PBXGroup;
 			children = (
@@ -123,6 +143,7 @@
 				4BD11DAC2D30A14A00E5D356 /* Wizard-Game Shared */,
 				4BD11DB72D30A14B00E5D356 /* Wizard-Game iOS */,
 				4B1973932D387697005D5F03 /* spellComponentsTest */,
+				4B1973A02D388741005D5F03 /* Frameworks */,
 				4BD11DB62D30A14B00E5D356 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -384,7 +405,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				4B19739C2D387A11005D5F03 /* SpellComponent.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
