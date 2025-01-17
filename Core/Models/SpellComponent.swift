@@ -18,6 +18,11 @@ struct position{
     let y: Int
 }
 
+indirect enum spellEffectReference{
+    case single(spellEffect)
+    case multiple([spellEffect])
+}
+
 struct spellEffect{
     let type: elementType
     var damage: Int=0
@@ -29,7 +34,7 @@ struct spellEffect{
     var chainedEffects: [spellEffect]=[]
     var passiveEffect: ((player) -> Void)?
     
-    var storedEffect: spellEffect?
+    var storedEffect: spellEffectReference?
     
     var pathEffects: [spellEffect]=[]
     var isRandom: Bool=false
@@ -46,9 +51,9 @@ struct spellEffect{
 
 class spellLibrary{
     class fire{
-        static func ball(tile: position, spreadTiles: [position]? = nil) -> spellEffect{
+        func ball(tile: position, spreadTiles: [position]? = nil) -> spellEffect{
             return spellEffect(
-                type: .fire,
+                type: elementType.fire,
                 damage: 50,
                 tickDamage: 0,
                 tiles: [tile]+(spreadTiles ?? []),
@@ -58,7 +63,7 @@ class spellLibrary{
         
         static func willOWisp(tile: position, duration: Int) -> spellEffect{
             return spellEffect(
-                type: .fire,
+                type: elementType.fire,
                 damage: 0,
                 tickDamage: 5,
                 tiles: [tile],
@@ -69,8 +74,8 @@ class spellLibrary{
         
         static func kindling(tile: position, turnsToActivate: Int, effects: [spellEffect]) -> spellEffect{
             return spellEffect(
-                type: .fire,
-                trigger: .delayed(turns: turnsToActivate),
+                type: elementType.fire,
+                trigger: triggerType.delayed(turns: turnsToActivate),
                 tiles: [tile],
                 removeEffects: ["ice", "darkness"],
                 chainedEffects: effects
@@ -80,7 +85,7 @@ class spellLibrary{
     class ice{
         static func icicle(tile: position, spreadTiles: [position]? = nil) -> spellEffect{
             return spellEffect(
-                type: .ice,
+                type: elementType.ice,
                 damage: 25,
                 tiles: [tile]+(spreadTiles ?? []),
                 removeEffects:["fire"],
@@ -89,7 +94,7 @@ class spellLibrary{
         }
         static func hail(tiles: [position], duration: Int) ->spellEffect{
             return spellEffect(
-                type: .ice,
+                type: elementType.ice,
                 damage: 0,
                 tickDamage: 0,
                 tiles: tiles,
@@ -100,11 +105,11 @@ class spellLibrary{
         }
         static func permafrost(tile: position, turnsToStore: Int) -> spellEffect{
             return spellEffect(
-                type: .ice,
+                type: elementType.ice,
                 damage: 0,
                 tiles: [tile],
-                trigger: .delayed(turns: turnsToStore),
-                storedEffect: nil //assigned dynamically in game
+                trigger: triggerType.delayed(turns: turnsToStore),
+                storedEffect: nil as spellEffect? //assigned dynamically in game
             )
         }
     }
@@ -122,7 +127,7 @@ class spellLibrary{
             let path=calculatePath(from: from, to: targetTile) //need to make this function
             
             return spellEffect(
-                type: .teleportation,
+                type: elementType.teleportation,
                 damage: 0,
                 tickDamage: 0,
                 tiles: path,
@@ -133,21 +138,21 @@ class spellLibrary{
         }
         static func portal(tile: position, isRandom: Bool, duration: Int, effects: [spellEffect]=[]) -> spellEffect{
             return spellEffect(
-                type: .teleportation,
+                type: elementType.teleportation,
                 damage: 0,
                 tickDamage: 0,
                 tiles: [tile],
                 duration: duration,
                 pathEffects: effects,
                 isRandom: isRandom,
-                linkedTile: nil //portal end destination linked dynamically in game
+                linkedTile: nil as spellEffect?//portal end destination linked dynamically in game
             )
         }
     }
     class protection{
         static func minorWard(tile: position) -> spellEffect{
             return spellEffect(
-                type: .protection,
+                type: elementType.protection,
                 damage: 0,
                 tiles: tile,
                 absorbsNextSpell: true
@@ -155,7 +160,7 @@ class spellLibrary{
         }
         static func majorWard(tile: position, effects:[spellEffect]=[]) -> spellEffect{
             return spellEffect(
-                type: .protection,
+                type: elementType.protection,
                 damage: 0,
                 tiles: tile,
                 absorbsNextSpell: true,
@@ -164,7 +169,7 @@ class spellLibrary{
         }
         static func aegis(tile: position, damageReduction: Int, effects: [spellEffect]=[]) -> spellEffect{
             return spellEffect(
-                type: .protection,
+                type: elementType.protection,
                 damage: 0,
                 tiles: tile,
                 damageReduction: damageReduction,
@@ -173,7 +178,7 @@ class spellLibrary{
         }
         static func mirror(tile: position) -> spellEffect{
             return spellEffect(
-                type: .protection,
+                type: elementType.protection,
                 damage: 0,
                 tiles: [tile],
                 reflectEffect: true
@@ -181,7 +186,7 @@ class spellLibrary{
         }
         static func purify(tile: position, targetClass: elementType) -> spellEffect{
             return spellEffect(
-                type: .protection,
+                type: elementType.protection,
                 damage: 0,
                 tiles: [tile],
                 purifyTarget: targetClass
@@ -191,7 +196,7 @@ class spellLibrary{
     class dark{
         static func shroud(tiles: [position], duration: Int) -> spellEffect{
             return spellEffect(
-                type: .dark,
+                type: elementType.dark,
                 damage: 5,
                 tickDamage: 5,
                 tiles: tiles,
