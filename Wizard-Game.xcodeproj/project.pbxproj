@@ -10,6 +10,7 @@
 		4B19739B2D387A11005D5F03 /* SpellComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BD11DEA2D30AD4E00E5D356 /* SpellComponent.swift */; };
 		4B1973A22D388741005D5F03 /* XCTest.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4B1973A12D388741005D5F03 /* XCTest.framework */; platformFilter = ios; };
 		4B1973A32D388760005D5F03 /* XCTest.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4B1973A12D388741005D5F03 /* XCTest.framework */; };
+		4B88C0412D3DD619000D34DE /* Spell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BD11DEB2D30AD5900E5D356 /* Spell.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -413,6 +414,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				4B19739B2D387A11005D5F03 /* SpellComponent.swift in Sources */,
+				4B88C0412D3DD619000D34DE /* Spell.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

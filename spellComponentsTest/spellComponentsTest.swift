@@ -22,11 +22,10 @@ class SpellSystemTests: XCTestCase {
         XCTAssertTrue(ward.absorbsNextSpell)
     }
     
-    // Test spell combinations and chaining
+    // Test spell chaining
     func testSpellChaining() {
         let testPosition = position(x: 0, y: 0)
         
-        // Create a delayed fire spell that chains into an ice spell
         let iceEffect = spellLibrary.ice.icicle(tile: testPosition)
         let delayedFire = spellLibrary.fire.kindling(
             tile: testPosition,
@@ -46,12 +45,10 @@ class SpellSystemTests: XCTestCase {
     func testSpellEffects() {
         let testPosition = position(x: 0, y: 0)
         
-        // Test Will-o-Wisp duration
         let wisp = spellLibrary.fire.willOWisp(tile: testPosition, duration: 3)
         XCTAssertEqual(wisp.duration, 3)
         XCTAssertEqual(wisp.tickDamage, 5)
         
-        // Test Shroud effect stacking
         let shroud = spellLibrary.dark.shroud(tiles: [testPosition], duration: 2)
         XCTAssertTrue(shroud.canStack)
         XCTAssertTrue(shroud.restrictVision)
@@ -62,7 +59,6 @@ class SpellSystemTests: XCTestCase {
         let startPos = position(x: 0, y: 0)
         let endPos = position(x: 5, y: 5)
         
-        // Test directed teleport
         let teleport = spellLibrary.teleportation.teleport(
             from: startPos,
             to: endPos,
@@ -70,7 +66,6 @@ class SpellSystemTests: XCTestCase {
         )
         XCTAssertFalse(teleport.isRandom)
         
-        // Test random teleport
         let randomTeleport = spellLibrary.teleportation.teleport(
             from: startPos,
             to: nil,
@@ -83,7 +78,6 @@ class SpellSystemTests: XCTestCase {
     func testProtectionEffects() {
         let testPosition = position(x: 0, y: 0)
         
-        // Test Aegis damage reduction
         let aegis = spellLibrary.protection.aegis(
             tile: testPosition,
             damageReduction: 25,
@@ -91,7 +85,6 @@ class SpellSystemTests: XCTestCase {
         )
         XCTAssertEqual(aegis.damageReduction, 25)
         
-        // Test Purify targeting
         let purify = spellLibrary.protection.purify(
             tile: testPosition,
             targetClass: .fire
@@ -103,12 +96,62 @@ class SpellSystemTests: XCTestCase {
     func testEffectInteractions() {
         let testPosition = position(x: 0, y: 0)
         
-        // Test fire removing ice effects
         let fireball = spellLibrary.fire.ball(tile: testPosition)
         XCTAssertTrue(fireball.removeEffects.contains("ice"))
         
-        // Test mirror reflection
         let mirror = spellLibrary.protection.mirror(tile: testPosition)
         XCTAssertTrue(mirror.reflectEffect)
+    }
+    
+    // Test spell execution with spellContext
+    func testSpellExecution() {
+        let context = spellContext(
+            casterPosition: position(x: 0, y: 0),
+            target: position(x: 2, y: 2),
+            battlefield: [[]], // Simulate an empty battlefield
+            playerHealth: 100,
+            playerMana: 50,
+            turnNumber: 1,
+            tileEffects: []
+        )
+        
+        // Test fireball barrage
+        let fireballBarrage = ExampleSpells.fireballBarrage(context: context)
+        XCTAssertEqual(fireballBarrage.count, 0, "No targets in range should result in no effects.")
+        
+        // Test frost nova
+        let frostNova = ExampleSpells.frostNova(context: context)
+        XCTAssertEqual(frostNova.count, 3, "Expected 3 expanding frost nova effects.")
+        
+        // Test teleport trap
+        let teleportTrap = ExampleSpells.teleportTrap(context: context)
+        XCTAssertEqual(teleportTrap.count, 1)
+        XCTAssertEqual(teleportTrap[0].trigger, .proximity(radius: 1))
+    }
+    
+    // Test error handling in spell execution
+    func testSpellExecutionErrors() {
+        let context = spellContext(
+            casterPosition: position(x: 0, y: 0),
+            target: position(x: 2, y: 2),
+            battlefield: [[]], // Simulate an empty battlefield
+            playerHealth: 100,
+            playerMana: 10, // Insufficient mana
+            turnNumber: 1,
+            tileEffects: []
+        )
+        
+        let insufficientManaSpell = spell(
+            name: "High Mana Cost Spell",
+            description: "A spell that costs too much mana",
+            author: "Test Author",
+            execute: ExampleSpells.fireballBarrage,
+            manaCost: 50,
+            sourceCode: "test source code",
+            createdAt: Date(),
+            lastModified: Date()
+        )
+        
+        XCTAssertFalse(context.playerMana >= insufficientManaSpell.manaCost, "Player should not have enough mana to cast this spell.")
     }
 }
