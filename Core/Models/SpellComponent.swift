@@ -23,6 +23,38 @@ indirect enum spellEffectReference{
     case multiple([spellEffect])
 }
 
+func randomTile() -> position {
+    let randomX=Int.random(in: 0...2)
+    let randomY=Int.random(in: 0...5)
+    return position(x: randomX, y: randomY)
+}
+
+func calculatePath(from start: position, to end: position) -> [position]{
+    var path: [position] = []
+    
+    if start.x != end.x{
+        let range=start.x<end.x ? Array((start.x...end.x)) : (end.x...start.x).reversed()
+        for x in range{
+            path.append(position(x: x, y: start.y))
+        }
+    }
+    
+    if start.y != end.y{
+        let range=start.y < end.y ? Array((start.y...end.y)) : (end.y...start.y).reversed()
+        for y in range{
+            path.append(position(x: end.x, y: y))
+        }
+    }
+    
+    return path
+}
+
+struct tile{
+    let position: position
+    var isOccupied: Bool=false
+    var effects: [spellEffect]=[]
+}
+
 struct spellEffect{
     let type: elementType
     var damage: Int=0
