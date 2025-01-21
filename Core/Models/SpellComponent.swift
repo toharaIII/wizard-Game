@@ -121,7 +121,7 @@ class spellLibrary{
                 damage: 25,
                 tiles: [tile]+(spreadTiles ?? []),
                 removeEffects:["fire"],
-                passiveEffect: {player in player.isImmobalized=true}
+                passiveEffect: {user in battleStatus.isImmobalized=true}
             )
         }
         static func hail(tiles: [position], duration: Int) ->spellEffect{

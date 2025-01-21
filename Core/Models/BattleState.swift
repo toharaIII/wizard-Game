@@ -8,11 +8,11 @@ enum gameState {
 
 class battleState{
     var curGameState: gameState
-    var turnOrder: [player]=[]
+    var turnOrder: [User]=[]
     var currentPlayerIndex: Int=0
     var tiles: [[tile]]
     var spellContexts: [spellContext]=[]
-    var winner: player?
+    var winner: User?
     
     init(tiles: [[tile]]){
         self.tiles=tiles
@@ -55,6 +55,22 @@ class battleState{
     func updateTileOccupation(from start: position, to end: position){
         tiles[start.x][start.y].isOccupied=false
         tiles[end.x][end.y].isOccupied=true
+    }
+    
+    func getTile(at position: position) -> tile? {
+        guard position.x >= 0, position.x < tiles.count,
+              position.y >= 0, position.y < tiles[0].count else { return nil}
+        return tiles[position.x][position.y]
+    }
+    
+    func updateTileEffects(for position: position, with effect: spellEffect){
+        guard var targetTile = getTile(at: position) else {return}
+        targetTile.effects.append(effect)
+    }
+    
+    func clearTileEffects(for position: position){
+        guard var targetTile = getTile(at: position) else {return}
+        targetTile.effects.removeAll()
     }
     
     func checkVictory(){

@@ -12,6 +12,7 @@
 		4B1973A32D388760005D5F03 /* XCTest.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4B1973A12D388741005D5F03 /* XCTest.framework */; };
 		4B88C0412D3DD619000D34DE /* Spell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BD11DEB2D30AD5900E5D356 /* Spell.swift */; };
 		4BE4C3DB2D3EBD810003DC7F /* BattleState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BD11DE92D30AD4600E5D356 /* BattleState.swift */; };
+		4BE9C7152D400CB600193AC1 /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BD11DEC2D30AD6000E5D356 /* User.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -416,6 +417,7 @@
 			files = (
 				4BE4C3DB2D3EBD810003DC7F /* BattleState.swift in Sources */,
 				4B19739B2D387A11005D5F03 /* SpellComponent.swift in Sources */,
+				4BE9C7152D400CB600193AC1 /* User.swift in Sources */,
 				4B88C0412D3DD619000D34DE /* Spell.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
