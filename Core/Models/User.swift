@@ -19,22 +19,41 @@ enum rankings{
     case ArchmageI
 }
 
-struct battleStatus{
-    var battleTome: [spell]
-    
-    let battleId: String
-    let opponent: String
-    let startTime: Date
-    let lastMoveTime: Date
+class player{
+    let userId: String
+    let userName: String
     
     var health: Int
     var mana: Int
     var position: position
-    var spellsCast: Int
-    var damageDealt: Int
+    var isImmobalized: Bool=false
+    var activeEffects: [spellEffect]=[]
     
-    var isImmobalized: Bool
-    var isYourTurn: Bool
+    init(userId: String, userName: String, health: Int, mana: Int, position: position){
+        self.userId=userId
+        self.userName=userName
+        self.health=health
+        self.mana=mana
+        self.position=position
+    }
+}
+
+struct battleStatus{
+    let battleId: String
+    let startTime: Date
+    
+    var player1: player
+    let battleTome1: [spell]
+    var spellsCast1: Int
+    var damageDealt1: Int
+    
+    var player2: player
+    let battleTome2: [spell]
+    var spellsCast2: Int
+    var damageDealt2: Int
+    
+    let lastMoveTime: Date
+    var turnFlag: Bool
     var turnNumber: Int
     var battleState: battleState //reference to the actual battle
 }
@@ -42,11 +61,6 @@ struct battleStatus{
 struct User{
     let id: String
     let userName: String
-    
-    //game Stats
-    var health: Int
-    var mana: Int
-    var position: position
     
     //spell collection
     var grimoire: [spell]

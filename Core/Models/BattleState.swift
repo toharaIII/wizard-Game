@@ -8,7 +8,7 @@ enum gameState {
 
 class battleState{
     var curGameState: gameState
-    var turnOrder: [User]=[]
+    var turnOrder: [player]=[]
     var currentPlayerIndex: Int=0
     var tiles: [[tile]]
     var spellContexts: [spellContext]=[]

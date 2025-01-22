@@ -13,7 +13,7 @@ enum triggerType{
     case proximity(radius: Int)
 }
 
-struct position{
+struct position{ //used to store players position on the grid
     let x: Int
     let y: Int
 }
@@ -49,7 +49,7 @@ func calculatePath(from start: position, to end: position) -> [position]{
     return path
 }
 
-struct tile{
+struct tile{ //grid is made up of a 3x6 array of these objects
     let position: position
     var isOccupied: Bool=false
     var effects: [spellEffect]=[]
@@ -70,7 +70,7 @@ struct spellEffect{
     
     var pathEffects: [spellEffect]=[]
     var isRandom: Bool=false
-    var linkedTile: position?=nil
+    var linkedTile: tile?=nil
     
     var absorbsNextSpell: Bool=false //for wards
     var reflectEffect: Bool=false //for mirror
@@ -107,8 +107,8 @@ class spellLibrary{
         static func kindling(tile: position, turnsToActivate: Int, effects: [spellEffect]) -> spellEffect{
             return spellEffect(
                 type: elementType.fire,
-                trigger: triggerType.delayed(turns: turnsToActivate),
                 tiles: [tile],
+                trigger: triggerType.delayed(turns: turnsToActivate),
                 removeEffects: ["ice", "darkness"],
                 chainedEffects: effects
             )
@@ -121,7 +121,7 @@ class spellLibrary{
                 damage: 25,
                 tiles: [tile]+(spreadTiles ?? []),
                 removeEffects:["fire"],
-                passiveEffect: {user in battleStatus.isImmobalized=true}
+                passiveEffect: {player in player.isImmobalized=true}
             )
         }
         static func hail(tiles: [position], duration: Int) ->spellEffect{
@@ -141,7 +141,7 @@ class spellLibrary{
                 damage: 0,
                 tiles: [tile],
                 trigger: triggerType.delayed(turns: turnsToStore),
-                storedEffect: nil as spellEffect? //assigned dynamically in game
+                storedEffect: nil as spellEffectReference? //assigned dynamically in game
             )
         }
     }
@@ -163,8 +163,8 @@ class spellLibrary{
                 damage: 0,
                 tickDamage: 0,
                 tiles: path,
-                pathEffects: pathEffects,
                 chainedEffects: destinationEffects,
+                pathEffects: pathEffects,
                 isRandom: isRandom
             )
         }
@@ -177,7 +177,7 @@ class spellLibrary{
                 duration: duration,
                 pathEffects: effects,
                 isRandom: isRandom,
-                linkedTile: nil as spellEffect?//portal end destination linked dynamically in game
+                linkedTile: nil as tile?//portal end destination linked dynamically in game
             )
         }
     }
@@ -186,7 +186,7 @@ class spellLibrary{
             return spellEffect(
                 type: elementType.protection,
                 damage: 0,
-                tiles: tile,
+                tiles: [tile],
                 absorbsNextSpell: true
             )
         }
@@ -194,18 +194,18 @@ class spellLibrary{
             return spellEffect(
                 type: elementType.protection,
                 damage: 0,
-                tiles: tile,
-                absorbsNextSpell: true,
-                chainedEffects: effects
+                tiles: [tile],
+                chainedEffects: effects,
+                absorbsNextSpell: true
             )
         }
         static func aegis(tile: position, damageReduction: Int, effects: [spellEffect]=[]) -> spellEffect{
             return spellEffect(
                 type: elementType.protection,
                 damage: 0,
-                tiles: tile,
-                damageReduction: damageReduction,
-                chainedEffects: effects
+                tiles: [tile],
+                chainedEffects: effects,
+                damageReduction: damageReduction
             )
         }
         static func mirror(tile: position) -> spellEffect{

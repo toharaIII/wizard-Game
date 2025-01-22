@@ -27,10 +27,7 @@ struct spell{
 struct spellContext{
     let casterPosition: position
     let target: position
-    let battlefield: [[tile]] //yet to be defined, expect error from this for the time being
-    
-    let playerHealth: Int
-    let playerMana: Int
+    let battlefield: [[tile]]
     let turnNumber: Int
     
     let tileEffects: [spellEffect]
