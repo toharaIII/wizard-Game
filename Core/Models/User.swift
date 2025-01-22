@@ -52,8 +52,6 @@ struct battleStatus{
     var spellsCast2: Int
     var damageDealt2: Int
     
-    let lastMoveTime: Date
-    var turnFlag: Bool
     var turnNumber: Int
     var battleState: battleState //reference to the actual battle
 }

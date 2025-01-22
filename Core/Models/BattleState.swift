@@ -10,9 +10,11 @@ class battleState{
     var curGameState: gameState
     var turnOrder: [player]=[]
     var currentPlayerIndex: Int=0
+    let lastMoveTime: Date
+    
     var tiles: [[tile]]
     var spellContexts: [spellContext]=[]
-    var winner: User?
+    var winner: player?
     
     init(tiles: [[tile]]){
         self.tiles=tiles
@@ -21,7 +23,7 @@ class battleState{
     
     func nextTurn(){ //turn management
         guard curGameState == gameState.running else {return}
-        currentPlayerIndex = (currentPlayerIndex+1)%turnOrder.count //like this so in future we can easily impliment more than 2 player battles
+        currentPlayerIndex = (currentPlayerIndex+1)%turnOrder.count //rotate thru ALL players
         let currentPlayer=turnOrder[currentPlayerIndex]
         processTurn(for: currentPlayer) //want to put this in a separate file
         //handles +mana, move, cast a spell, and therefore should be built at the end of models
@@ -44,17 +46,16 @@ class battleState{
         if effect.damageReduction>0{
             totalDamage -= effect.damageReduction
         }
-        return totalDamage
+        return max(0, totalDamage)
     }
     
-    func movePlayer(from start: position, to end: position){
+    func movePlayer(player: player, to newTile: tile){
         guard curGameState == gameState.running else {return}
-        updateTileOccupation(from: start, to: end)
-    }
-    
-    func updateTileOccupation(from start: position, to end: position){
-        tiles[start.x][start.y].isOccupied=false
-        tiles[end.x][end.y].isOccupied=true
+        guard var currentTile=getTile(at: player.position) else {return}
+        
+        currentTile.isOccupied=false
+        player.position=newTile.position
+        tiles[newTile.position.x][newTile.position.y].isOccupied=true
     }
     
     func getTile(at position: position) -> tile? {
@@ -64,19 +65,37 @@ class battleState{
     }
     
     func updateTileEffects(for position: position, with effect: spellEffect){
-        guard var targetTile = getTile(at: position) else {return}
+        guard var targetTile = getTile(at: position) else { return }
         targetTile.effects.append(effect)
+        tiles[position.x][position.y] = targetTile
     }
     
-    func clearTileEffects(for position: position){
-        guard var targetTile = getTile(at: position) else {return}
+    func clearTileEffects(for position: position) {
+        guard var targetTile = getTile(at: position) else { return }
         targetTile.effects.removeAll()
+        tiles[position.x][position.y] = targetTile
     }
     
     func checkVictory(){
-        if turnOrder.contains(where: {$0.health <= 0}){
-            curGameState = gameState.gameOver
-            winner=turnOrder.first {$0.health > 0} //will need to change this if more than 2 ppl, maybe?
+        if let defeatedPlayer = turnOrder.first(where: {$0.health <= 0}){
+            curGameState=gameState.gameOver
+            winner = turnOrder.first { player in
+                player !== defeatedPlayer && player.health > 0
+            }
+            return
+        }
+        
+        if turnOrder.count==1{
+            curGameState=gameState.gameOver
+            winner=turnOrder.first
+            return
+        }
+        
+        let timeElapsed=Date().timeIntervalSince(lastMoveTime)
+        if timeElapsed > 24*60*60{
+            let losingPlayer=turnOrder[currentPlayerIndex]
+            curGameState=gameState.gameOver
+            winner=turnOrder.first {$0.userId != losingPlayer.userId}
         }
     }
 }
