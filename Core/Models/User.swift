@@ -1,7 +1,7 @@
 //holds data for currently signed in user to be taken when needed for local app stuff
 import Foundation
 
-enum rankings{
+enum rankings{ //all possible player rankings
     case NoviceIII
     case NoviceII
     case NoviceI
@@ -19,6 +19,7 @@ enum rankings{
     case ArchmageI
 }
 
+/*stores all data for any one player which is only important to the progression of any one battle*/
 class player{
     let userId: String
     let userName: String
@@ -26,6 +27,7 @@ class player{
     var health: Int
     var mana: Int
     var position: position
+    var restrictedVision: Bool=false
     var isImmobalized: Bool=false
     var activeEffects: [spellEffect]=[]
     
@@ -38,6 +40,8 @@ class player{
     }
 }
 
+/*stores all information for any one battle, including that of both players along with information
+ regarding the game state and grid, and is how a battle is found in the database*/
 struct battleStatus{
     let battleId: String
     let startTime: Date
@@ -56,6 +60,7 @@ struct battleStatus{
     var battleState: battleState //reference to the actual battle
 }
 
+/*stores lifetime data for a user such as username, stored and active spells, and lifetime stats aggregated from all games*/
 struct User{
     let id: String
     let userName: String

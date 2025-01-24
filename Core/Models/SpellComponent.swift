@@ -1,5 +1,5 @@
 //holds spell classes
-enum elementType{
+enum elementType{ //holds all spell class names
     case fire
     case ice
     case teleportation
@@ -7,7 +7,7 @@ enum elementType{
     case dark
 }
 
-enum triggerType{
+enum triggerType{ //all possible ways in which a casted spell can have its effects triggered
     case immediate
     case delayed(turns: Int)
     case proximity(radius: Int)
@@ -18,17 +18,20 @@ struct position{ //used to store players position on the grid
     let y: Int
 }
 
-indirect enum spellEffectReference{
+indirect enum spellEffectReference{ //used so that spellEffects can stored chain effects without recurisve call
     case single(spellEffect)
     case multiple([spellEffect])
 }
 
-func randomTile() -> position {
+func randomTile() -> position { //creates a position struct to a random position within the bounds of the grid
     let randomX=Int.random(in: 0...2)
     let randomY=Int.random(in: 0...5)
     return position(x: randomX, y: randomY)
 }
 
+/*
+ creates an efficient path between 2 positions on the grid and returns an array of the positions within said path
+ */
 func calculatePath(from start: position, to end: position) -> [position]{
     var path: [position] = []
     
@@ -53,8 +56,19 @@ struct tile{ //grid is made up of a 3x6 array of these objects
     let position: position
     var isOccupied: Bool=false
     var effects: [spellEffect]=[]
+    
+    var tickDamage: Int=0
+    var absorbsNextSpell: Bool=false
+    var reflectEffect: Bool=false
+    var damageReduction: Int=0
+    var restrictVision: Bool=false
+    var isImmobalized: Bool=false
+    var localElementTypes: [String]=[]
 }
 
+/*
+ stores all possible variables which can be effected by spell components within the spellLibrary
+ */
 struct spellEffect{
     let type: elementType
     var damage: Int=0
@@ -78,7 +92,7 @@ struct spellEffect{
     var purifyTarget: elementType?=nil //for purify
     
     var restrictVision: Bool=false
-    var canStack: Bool=false
+    var immobalized: Bool=false
 }
 
 class spellLibrary{
@@ -121,7 +135,7 @@ class spellLibrary{
                 damage: 25,
                 tiles: [tile]+(spreadTiles ?? []),
                 removeEffects:["fire"],
-                passiveEffect: {player in player.isImmobalized=true}
+                immobalized: true
             )
         }
         static func hail(tiles: [position], duration: Int) ->spellEffect{
@@ -132,7 +146,7 @@ class spellLibrary{
                 tiles: tiles,
                 duration: duration,
                 removeEffects: ["fire"],
-                passiveEffect: {player in player.isImmobalized=true}
+                immobalized: true
             )
         }
         static func permafrost(tile: position, turnsToStore: Int) -> spellEffect{
@@ -233,8 +247,7 @@ class spellLibrary{
                 tickDamage: 5,
                 tiles: tiles,
                 duration: duration,
-                restrictVision: true,
-                canStack: true
+                restrictVision: true
             )
         }
     }
