@@ -17,7 +17,6 @@ class battleState{
     let lastMoveTime: Date
     
     var tiles: [[tile]]
-    var spellContexts: [spellContext]=[]
     var winner: player?
     
     var battleStatus: battleStatus
@@ -26,6 +25,20 @@ class battleState{
         self.tiles=tiles
         self.curGameState=gameState.running
     }
+    
+    
+    /*
+     here is a list of all the functions that need to exist inside this class, excluding stuff to send push notificaitons to players
+     function to decide who goes first and then populate the turnOrder array, should also update the currentPlayerIndex to the first Player
+     function to process a turn:
+        add 20 mana to that players mana bar, allow them to move their player to an adjacent space on the grid, and cast 1 spell
+     function to apply the effect(s) of a spell to the player and tile(s) that it is casted on, if it is casted on multiple tiles than things like direct damage need to be divided evenly amongst all tiles the spellEffect is applied to
+        in our case we are going to handle this by calling a smaller funciton handleEffect for each effect in a spell, and apply it to the tile and player if one is there by having each spell effect element be handled by its own function
+     function to queue up the next turn by getting the player object for the next player and calling process turn for that player object
+     function to check fro win conditions
+     we also need to be updating lifetime stats and its probably easiest to do that inside of these functions
+     */
+    
     
     /*moves the turn cycle to the next player in the turn order and runs the function to process that players next turn*/
     func nextTurn(){ //turn management
