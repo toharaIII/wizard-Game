@@ -69,7 +69,7 @@ struct tile{ //grid is made up of a 3x6 array of these objects
 /*
  stores all possible variables which can be effected by spell components within the spellLibrary
  */
-struct spellEffect{
+class spellEffect{
     let type: elementType
     var damage: Int=0
     var tickDamage: Int=0
@@ -93,6 +93,54 @@ struct spellEffect{
     
     var restrictVision: Bool=false
     var immobalized: Bool=false
+    
+    //minimal initalizer
+    init(type: elementType, tiles: [position]){
+        self.type = type
+        self.tiles=tiles
+    }
+    
+    //maximum initalizer
+    init(type: elementType,
+             damage: Int = 0,
+             tickDamage: Int = 0,
+             tiles: [position],
+             duration: Int = 1,
+             trigger: triggerType = .immediate,
+             removeEffects: [String] = [],
+             chainedEffects: [spellEffect] = [],
+             passiveEffect: ((player) -> Void)? = nil,
+             storedEffect: spellEffectReference? = nil,
+             pathEffects: [spellEffect] = [],
+             isRandom: Bool = false,
+             linkedTile: tile? = nil,
+             absorbsNextSpell: Bool = false,
+             reflectEffect: Bool = false,
+             damageReduction: Int = 0,
+             purifyTarget: elementType? = nil,
+             restrictVision: Bool = false,
+             immobalized: Bool = false) {
+            
+            self.type = type
+            self.damage = damage
+            self.tickDamage = tickDamage
+            self.tiles = tiles
+            self.duration = duration
+            self.trigger = trigger
+            self.removeEffects = removeEffects
+            self.chainedEffects = chainedEffects
+            self.passiveEffect = passiveEffect
+            self.storedEffect = storedEffect
+            self.pathEffects = pathEffects
+            self.isRandom = isRandom
+            self.linkedTile = linkedTile
+            self.absorbsNextSpell = absorbsNextSpell
+            self.reflectEffect = reflectEffect
+            self.damageReduction = damageReduction
+            self.purifyTarget = purifyTarget
+            self.restrictVision = restrictVision
+            self.immobalized = immobalized
+        }
 }
 
 class spellLibrary{

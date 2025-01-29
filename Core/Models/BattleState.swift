@@ -20,6 +20,8 @@ class battleState{
     var spellContexts: [spellContext]=[]
     var winner: player?
     
+    var battleStatus: battleStatus
+    
     init(tiles: [[tile]]){
         self.tiles=tiles
         self.curGameState=gameState.running
@@ -30,7 +32,7 @@ class battleState{
         guard curGameState == gameState.running else {return}
         currentPlayerIndex = (currentPlayerIndex+1)%turnOrder.count //rotate thru ALL players
         let currentPlayer=turnOrder[currentPlayerIndex]
-        processTurn(for: currentPlayer) //want to put this in a separate file
+        //processTurn(for: currentPlayer) //want to put this in a separate file
         //handles +mana, move, cast a spell, and therefore should be built at the end of models
     }
     
@@ -38,15 +40,69 @@ class battleState{
     func applyEffects(){
         for context in spellContexts{
             for effect in context.tileEffects{
-                handleEffect(effect: effect, for: context)
+                handleEffect(effect: effect, curTile: tile)
             }
         }
     }
     
     /*for any one given spell effect will call helper functions to apply and/or cancel out all elements of that spell effect*/
-    func handleEffect(effect: spellEffect, for context: spellContext){
-        /*want to do an if/else if/else block that will call a specially created function for each element of the spell effect struct
-         i.e. we need one for direct damage, tick damage, checking duration, applying immobilization, resttricted vision, etc*/
+    func handleEffect(effect: spellEffect, curTile: inout tile){
+        if effect.damage > 0 {
+            let effectiveDamage = applyDamage(to: &curTile, damage: effect.damage)
+            if positionCompare(position1: battleStatus.player1.position, position2: curTile.position)==true {
+                battleStatus.player1.health -= effectiveDamage
+            }
+            else{
+                if positionCompare(position1: battleStatus.player2.position, position2: curTile.position)==true {
+                    battleStatus.player2.health -= effectiveDamage
+                }
+            }
+        }
+
+        if effect.tickDamage > 0 {
+            applyTickDamage(to: &curTile, tickDamage: effect.tickDamage)
+        }
+
+        if effect.duration > 1 {
+            curTile.effects.append(effect)
+        }
+
+        for removeEffect in effect.removeEffects {
+            applyRemoveEffects(to: &curTile, effect: removeEffect)
+        }
+
+        for chainedEffect in effect.chainedEffects {
+            handleEffect(effect: chainedEffect, curTile: &tile)
+        }
+
+        if !effect.pathEffects.isEmpty {
+            var affectedTiles = [curTile]
+            applyPathEffects(to: &affectedTiles, effects: effect.pathEffects)
+        }
+
+        if effect.absorbsNextSpell {
+            applyAbsorbsNextSpell(to: &curTile)
+        }
+
+        if effect.reflectEffect {
+            applyReflectEffect(tile: &curTile)
+        }
+
+        if let purifyElement = effect.purifyTarget {
+            purifyTarget(from: &curTile, elementType: purifyElement.rawValue)
+        }
+
+        if effect.restrictVision {
+            applyRestrictVision(to: &curTile)
+        }
+
+        if effect.immobalized {
+            applyImmobilize(to: &curTile)
+        }
+
+        if let passiveEffect = effect.passiveEffect, let player = curTile.occupyingPlayer {
+            passiveEffect(player)
+        }
     }
     
     func applyDamage(to tile: inout tile, damage: Int) -> Int{
@@ -71,7 +127,7 @@ class battleState{
         for tile in tiles{
             for effect in effects{
                 var mutableTile=tile
-                handleEffect(effect: effect, tile: &mutableTile)
+                handleEffect(effect: spellEffect, tile: &mutableTile)
             }
         }
     }
@@ -150,5 +206,10 @@ class battleState{
             curGameState=gameState.gameOver
             winner=turnOrder.first {$0.userId != losingPlayer.userId}
         }
+    }
+    
+    func positionCompare(position1: position, position2: position) -> Bool{
+        if position1.x == position2.x && position1.y == position2.y {return true}
+        else {return false}
     }
 }
