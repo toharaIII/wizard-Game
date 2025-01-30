@@ -16,6 +16,7 @@ struct spell{
     let author: String
     
     let effect: spellEffect
+    let secondaryTile: Bool
     
     let manaCost: Int
     let sourceCode: String
@@ -29,6 +30,7 @@ struct spell{
          description: String,
          author: String,
          effect: spellEffect,
+         secondaryTile: Bool,
          manaCost: Int,
          sourceCode: String,
          createdAt: Date=Date(),
@@ -37,6 +39,7 @@ struct spell{
         self.description=description
         self.author=author
         self.effect=effect
+        self.secondaryTile=secondaryTile
         self.manaCost=manaCost
         self.sourceCode=sourceCode
         self.createdAt=createdAt

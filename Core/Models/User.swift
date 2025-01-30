@@ -24,6 +24,10 @@ class player{
     let userId: String
     let userName: String
     
+    let battleTome: [spell]
+    var spellsCast: Int
+    var damageDealt: Int
+    
     var health: Int
     var mana: Int
     var position: position
@@ -31,11 +35,14 @@ class player{
     var isImmobalized: Bool=false
     var activeEffects: [spellEffect]=[]
     
-    init(userId: String, userName: String, health: Int, mana: Int, position: position){
+    init(userId: String, userName: String, battleTome: [spell], position: position){
         self.userId=userId
         self.userName=userName
-        self.health=health
-        self.mana=mana
+        self.battleTome=battleTome
+        self.spellsCast=0
+        self.damageDealt=0
+        self.health=100
+        self.mana=100
         self.position=position
     }
 }
@@ -47,14 +54,8 @@ class battleStatus{
     let startTime: Date
     
     var player1: player
-    let battleTome1: [spell]
-    var spellsCast1: Int
-    var damageDealt1: Int
     
     var player2: player
-    let battleTome2: [spell]
-    var spellsCast2: Int
-    var damageDealt2: Int
     
     var turnNumber: Int
     var battleState: battleState //reference to the actual battle
@@ -62,25 +63,13 @@ class battleStatus{
     init(battleId: String,
          startTime: Date,
          player1: player,
-         battleTome1: [spell],
-         spellsCast1: Int,
-         damageDealt1: Int,
          player2: player,
-         battleTome2: [spell],
-         spellsCast2: Int,
-         damageDealt2: Int,
          turnNumber: Int,
          battleState: battleState){
         self.battleId = battleId
         self.startTime = startTime
         self.player1 = player1
-        self.battleTome1 = battleTome1
-        self.spellsCast1 = spellsCast1
-        self.damageDealt1 = damageDealt1
         self.player2 = player2
-        self.battleTome2 = battleTome2
-        self.spellsCast2 = spellsCast2
-        self.damageDealt2 = damageDealt2
         self.turnNumber = turnNumber
         self.battleState = battleState
     }

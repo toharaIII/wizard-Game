@@ -6,13 +6,26 @@ enum gameState { //all possible states a battle can be in
     case gameOver
 }
 
+enum spellTarget{
+    case none
+    case currentPlayer
+    case otherPlayer
+}
+
+struct turnContext{
+    let currentPlayer: player
+    let otherPlayer: player
+    let selectSpell: spell
+    let primaryTile: tile
+    let secondaryTile: tile?
+}
 /*
 designed to be a battle manager and hold immediately necessary data for all players
 holds all players in turn order, all spell contexts of all tiles, functions to be applied to players or tiles along with those to progress the battle such as advancing turns and checking win conditions
 */
 class battleState{
     var curGameState: gameState
-    var turnOrder: [player]=[]
+    var turnOrder: [String]=[]
     var currentPlayerIndex: Int=0
     let lastMoveTime: Date
     
@@ -24,6 +37,7 @@ class battleState{
     init(tiles: [[tile]]){
         self.tiles=tiles
         self.curGameState=gameState.running
+        self.turnOrder=[battleStatus.player1.userName, battleStatus.player2.userName].shuffled()
     }
     
     
@@ -39,6 +53,7 @@ class battleState{
      we also need to be updating lifetime stats and its probably easiest to do that inside of these functions
      */
     
+
     
     /*moves the turn cycle to the next player in the turn order and runs the function to process that players next turn*/
     func nextTurn(){ //turn management
@@ -49,13 +64,75 @@ class battleState{
         //handles +mana, move, cast a spell, and therefore should be built at the end of models
     }
     
-    /*calls helper functions for all effects within the spellEffects struct so that they can be applied and/or cancel out existing effects to that player/tile*/
-    func applyEffects(){
-        for context in spellContexts{
-            for effect in context.tileEffects{
-                handleEffect(effect: effect, curTile: tile)
+    func processTurn(currentPlayer: player){
+        guard curGameState == gameState.running else {return}
+        
+        let currentPlayerName=turnOrder[currentPlayerIndex]
+        let currentPlayer: player
+        let otherPlayer: player
+        
+        if battleStatus.player1.userName == currentPlayerName{
+            currentPlayer=battleStatus.player1
+            otherPlayer=battleStatus.player2
+        } else if battleStatus.player2.userName == currentPlayerName{
+            currentPlayer=battleStatus.player2
+            otherPlayer=battleStatus.player1
+        } else {return}
+        
+        currentPlayer.mana+=20
+        
+        if let newTile=getMove(for: currentPlayer){ //gets the move from the screen when player clicks it
+            movePlayer(player: currentPlayer, to: newTile)
+        }
+        
+        guard let selectedSpell = getSpell(for: currentPlayer) else { //gets the spell from the screen when the player clicks it
+            print("No valid spell selected.")
+            return
+        }
+        currentPlayer.spellsCast+=1
+        let primaryTile=selectTile(for: currentPlayer) //gets the tile from the screen when the player clicks it
+        
+        if positionCompare(position1: primaryTile, position2: currentPlayer.position)==true{
+            if selectedSpell.secondaryTile==true{
+                let secondaryTile=selectOptionalTile(for: currentPlayer) // Default to nil if not needed
+                applyEffects(spell: selectedSpell, caster: currentPlayer, primaryTile: primaryTile, secondaryTile: secondaryTile, effectedPlayer: currentPlayer)
+            } else{
+                applyEffects(spell: selectedSpell, caster: currentPlayer, primaryTile: primaryTile, effectedPlayer: currentPlayer)
             }
         }
+        
+        else if positionCompare(position1: primaryTile, position2: otherPlayer.position)==true{
+            if selectedSpell.secondaryTile==true{
+                let secondaryTile=selectOptionalTile(for: currentPlayer) // Default to nil if not needed
+                applyEffects(spell: selectedSpell, caster: currentPlayer, primaryTile: primaryTile, secondaryTile: secondaryTile, effectedPlayer: otherPlayer)
+            } else{
+                applyEffects(spell: selectedSpell, caster: currentPlayer, primaryTile: primaryTile, effectedPlayer: otherPlayer)
+            }
+        }
+        
+        else{
+            if selectedSpell.secondaryTile==true{
+                let secondaryTile=selectOptionalTile(for: currentPlayer) // Default to nil if not needed
+                applyEffects(spell: selectedSpell, caster: currentPlayer, primaryTile: primaryTile, secondaryTile: secondaryTile)
+            } else{
+                applyEffects(spell: selectedSpell, caster: currentPlayer, primaryTile: primaryTile)
+            }
+        }
+            
+        checkVictory()
+        if curGameState == gameState.running{nextTurn()}
+    }
+    
+    /*calls helper functions for all effects within the spellEffects struct so that they can be applied and/or cancel out existing effects to that player/tile*/
+    func applyEffects(spell: spell, caster: player, primaryTile: tile, secondaryTile: tile? = nil, effectedPlayer: player? = nil){
+        let effect=spell.effect
+        caster.mana-=spell.manaCost
+    
+        //see if a player is on the tile that was casted to
+        //if so apply effects to both the tile and the player
+        
+        
+        //handleEffect(effect: , curTile: )
     }
     
     /*for any one given spell effect will call helper functions to apply and/or cancel out all elements of that spell effect*/
@@ -176,19 +253,62 @@ class battleState{
         tiles[newTile.position.x][newTile.position.y].isOccupied=true
     }
     
-    /*ensures that any called for position is within the bounds of the grid*/
-    func getTile(at position: position) -> tile? {
-        guard position.x >= 0, position.x < tiles.count,
-              position.y >= 0, position.y < tiles[0].count else { return nil}
-        return tiles[position.x][position.y]
+    private func getCurrentPlayers(currentPlayerName: String) -> (player, player)?{
+        if battleStatus.player1.userName==currentPlayerName{
+            return (battleStatus.player1, battleStatus.player2)
+        } else if battleStatus.player2.userName==currentPlayerName{
+            return (battleStatus.player2, battleStatus.player1)
+        } else{return nil}
     }
     
-    /*adds an effect to the tiles spellEffect array*/
-    func updateTileEffects(for position: position, with effect: spellEffect){
-        guard var targetTile = getTile(at: position) else { return }
-        targetTile.effects.append(effect)
-        tiles[position.x][position.y] = targetTile
+    private func getSpellTarget(primaryTile: tile, currentPlayer: player, otherPlayer: player, secondaryTile: tile? = nil) -> spellTarget{
+        if positionCompare(position1: primaryTile.position, position2: currentPlayer.position)==true{
+            return spellTarget.currentPlayer
+        }
+        if positionCompare(position1: primaryTile.position, position2: otherPlayer.position)==true{
+            return spellTarget.otherPlayer
+        } else{return spellTarget.none}
     }
+    
+    private func processSpell(context: turnContext){
+        let target=getSpellTarget(primaryTile: context.primaryTile,
+                                  currentPlayer: context.currentPlayer,
+                                  otherPlayer: context.otherPlayer)
+        switch target{
+        case spellTarget.currentPlayer:
+            applyEffects(spell: context.selectSpell,
+                         caster: context.currentPlayer,
+                         primaryTile: context.primaryTile,
+                         secondaryTile: context.secondaryTile,
+                         effectedPlayer: context.currentPlayer)
+        case spellTarget.otherPlayer:
+            applyEffects(spell: context.selectSpell,
+                         caster: context.currentPlayer,
+                         primaryTile: context.primaryTile,
+                         secondaryTile: context.secondaryTile,
+                         effectedPlayer: context.otherPlayer)
+        case spellTarget.none:
+            applyEffects(spell: context.selectSpell,
+                         caster: context.currentPlayer,
+                         primaryTile: context.primaryTile,
+                         secondaryTile: context.secondaryTile)
+        }
+        
+    }
+    
+    /*ensures that any called for position is within the bounds of the grid*/
+        func getTile(at position: position) -> tile? {
+            guard position.x >= 0, position.x < tiles.count,
+                  position.y >= 0, position.y < tiles[0].count else { return nil}
+            return tiles[position.x][position.y]
+        }
+        
+        /*adds an effect to the tiles spellEffect array*/
+        func updateTileEffects(for position: position, with effect: spellEffect){
+            guard var targetTile = getTile(at: position) else { return }
+            targetTile.effects.append(effect)
+            tiles[position.x][position.y] = targetTile
+        }
     
     /*removes all effects from a tile*/
     func clearTileEffects(for position: position) {
