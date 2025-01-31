@@ -19,6 +19,17 @@ struct turnContext{
     let primaryTile: tile
     let secondaryTile: tile?
 }
+
+enum VictoryCondition{
+    case playerDefeated
+    case timeOut
+}
+
+struct victoryResult{
+    let winner: player
+    let reason: VictoryCondition
+}
+
 /*
 designed to be a battle manager and hold immediately necessary data for all players
 holds all players in turn order, all spell contexts of all tiles, functions to be applied to players or tiles along with those to progress the battle such as advancing turns and checking win conditions
@@ -53,74 +64,41 @@ class battleState{
      we also need to be updating lifetime stats and its probably easiest to do that inside of these functions
      */
     
-
-    
-    /*moves the turn cycle to the next player in the turn order and runs the function to process that players next turn*/
-    func nextTurn(){ //turn management
-        guard curGameState == gameState.running else {return}
-        currentPlayerIndex = (currentPlayerIndex+1)%turnOrder.count //rotate thru ALL players
-        let currentPlayer=turnOrder[currentPlayerIndex]
-        //processTurn(for: currentPlayer) //want to put this in a separate file
-        //handles +mana, move, cast a spell, and therefore should be built at the end of models
-    }
-    
     func processTurn(currentPlayer: player){
         guard curGameState == gameState.running else {return}
         
-        let currentPlayerName=turnOrder[currentPlayerIndex]
-        let currentPlayer: player
-        let otherPlayer: player
+        guard let (currentPlayer, otherPlayer)=getCurrentPlayers(currentPlayerName: turnOrder[currentPlayerIndex]) else {return}
+        let players=(currentPlayer, otherPlayer)
         
-        if battleStatus.player1.userName == currentPlayerName{
-            currentPlayer=battleStatus.player1
-            otherPlayer=battleStatus.player2
-        } else if battleStatus.player2.userName == currentPlayerName{
-            currentPlayer=battleStatus.player2
-            otherPlayer=battleStatus.player1
-        } else {return}
-        
-        currentPlayer.mana+=20
-        
-        if let newTile=getMove(for: currentPlayer){ //gets the move from the screen when player clicks it
-            movePlayer(player: currentPlayer, to: newTile)
+        players.0.mana+=20
+        if let newTile=getMove(for: players.0){
+            movePlayer(player: players.0, to: newTile)
         }
         
-        guard let selectedSpell = getSpell(for: currentPlayer) else { //gets the spell from the screen when the player clicks it
-            print("No valid spell selected.")
+        guard let selectedSpell=getSpell(for: players.0) else{
+            print("No valid spell selected")
             return
         }
-        currentPlayer.spellsCast+=1
-        let primaryTile=selectTile(for: currentPlayer) //gets the tile from the screen when the player clicks it
         
-        if positionCompare(position1: primaryTile, position2: currentPlayer.position)==true{
-            if selectedSpell.secondaryTile==true{
-                let secondaryTile=selectOptionalTile(for: currentPlayer) // Default to nil if not needed
-                applyEffects(spell: selectedSpell, caster: currentPlayer, primaryTile: primaryTile, secondaryTile: secondaryTile, effectedPlayer: currentPlayer)
-            } else{
-                applyEffects(spell: selectedSpell, caster: currentPlayer, primaryTile: primaryTile, effectedPlayer: currentPlayer)
-            }
-        }
+        players.0.spellsCast+=1
+        let primaryTile=selectTile(for: players.0)
         
-        else if positionCompare(position1: primaryTile, position2: otherPlayer.position)==true{
-            if selectedSpell.secondaryTile==true{
-                let secondaryTile=selectOptionalTile(for: currentPlayer) // Default to nil if not needed
-                applyEffects(spell: selectedSpell, caster: currentPlayer, primaryTile: primaryTile, secondaryTile: secondaryTile, effectedPlayer: otherPlayer)
-            } else{
-                applyEffects(spell: selectedSpell, caster: currentPlayer, primaryTile: primaryTile, effectedPlayer: otherPlayer)
-            }
-        }
+        let context=turnContext(
+            currentPlayer: players.0,
+            otherPlayer: players.1,
+            selectSpell: selectedSpell,
+            primaryTile: primaryTile,
+            secondaryTile: selectedSpell.secondaryTile ? selectOptionalTile(for: players.0) : nil
+            )
         
-        else{
-            if selectedSpell.secondaryTile==true{
-                let secondaryTile=selectOptionalTile(for: currentPlayer) // Default to nil if not needed
-                applyEffects(spell: selectedSpell, caster: currentPlayer, primaryTile: primaryTile, secondaryTile: secondaryTile)
-            } else{
-                applyEffects(spell: selectedSpell, caster: currentPlayer, primaryTile: primaryTile)
-            }
+        processSpell(context: context)
+        
+        checkVictory(currentPlayer: players.0, otherPlayer: players.1)
+        if curGameState == gameState.running{ //if no victory condition has been met than begin a new turn with the next player
+            currentPlayerIndex = (currentPlayerIndex+1)%turnOrder.count
+            if battleStatus.player1.userName==turnOrder[currentPlayerIndex]{processTurn(currentPlayer: battleStatus.player1)}
+            else {processTurn(currentPlayer: battleStatus.player2)}
         }
-            
-        checkVictory()
-        if curGameState == gameState.running{nextTurn()}
     }
     
     /*calls helper functions for all effects within the spellEffects struct so that they can be applied and/or cancel out existing effects to that player/tile*/
@@ -317,32 +295,46 @@ class battleState{
         tiles[position.x][position.y] = targetTile
     }
     
-    /*checks all possible win conditions against existing battleState*/
-    func checkVictory(){
-        if let defeatedPlayer = turnOrder.first(where: {$0.health <= 0}){
-            curGameState=gameState.gameOver
-            winner = turnOrder.first { player in
-                player !== defeatedPlayer && player.health > 0
-            }
-            return
-        }
-        
-        if turnOrder.count==1{
-            curGameState=gameState.gameOver
-            winner=turnOrder.first
-            return
-        }
-        
-        let timeElapsed=Date().timeIntervalSince(lastMoveTime)
-        if timeElapsed > 24*60*60{
-            let losingPlayer=turnOrder[currentPlayerIndex]
-            curGameState=gameState.gameOver
-            winner=turnOrder.first {$0.userId != losingPlayer.userId}
-        }
-    }
-    
     func positionCompare(position1: position, position2: position) -> Bool{
         if position1.x == position2.x && position1.y == position2.y {return true}
         else {return false}
+    }
+    
+    /*checks all possible win conditions against existing battleState*/
+    func checkVictory(currentPlayer: player, otherPlayer: player){//} -> victoryResult?{
+        if let result=checkHealthDefeat(currentPlayer: currentPlayer, otherPlayer: otherPlayer){
+            endGame(result)
+            //return result
+        }
+        if let result=checkTimeOut(lastMoveTime: lastMoveTime, currentPlayer: currentPlayer, otherPlayer: otherPlayer){
+            endGame(result)
+            //return result
+        }
+        //return nil
+    }
+    
+    private func checkHealthDefeat(currentPlayer: player, otherPlayer: player) -> victoryResult?{
+        if currentPlayer.health<=0{
+            return victoryResult(winner: otherPlayer, reason: VictoryCondition.playerDefeated)
+        }
+        if otherPlayer.health<=0{
+            return victoryResult(winner: currentPlayer, reason: VictoryCondition.playerDefeated)
+        }
+        return nil
+    }
+    
+    private func checkTimeOut(lastMoveTime: Date, currentPlayer: player, otherPlayer: player) -> victoryResult?{
+        let timeElapsed=Date().timeIntervalSince(lastMoveTime)
+        let timeOutLimit: TimeInterval=24*60*60
+        if timeElapsed>timeOutLimit{
+            return victoryResult(winner: otherPlayer, reason: VictoryCondition.timeOut)
+        }
+        return nil
+    }
+    
+    private func endGame(_ result: victoryResult){
+        curGameState=gameState.gameOver
+        winner=result.winner
+        //we need to update the lifetime stats here as well
     }
 }
