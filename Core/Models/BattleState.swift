@@ -16,8 +16,8 @@ struct turnContext{
     let currentPlayer: player
     let otherPlayer: player
     let selectSpell: spell
-    let primaryTile: tile
-    let secondaryTile: tile?
+    var primaryTile: tile
+    var secondaryTile: tile?
 }
 
 enum VictoryCondition{
@@ -81,9 +81,9 @@ class battleState{
         }
         
         players.0.spellsCast+=1
-        let primaryTile=selectTile(for: players.0)
+        var primaryTile=selectTile(for: players.0)
         
-        let context=turnContext(
+        var context=turnContext(
             currentPlayer: players.0,
             otherPlayer: players.1,
             selectSpell: selectedSpell,
@@ -91,7 +91,7 @@ class battleState{
             secondaryTile: selectedSpell.secondaryTile ? selectOptionalTile(for: players.0) : nil
             )
         
-        processSpell(context: context)
+        processSpell(context: &context)
         
         checkVictory(currentPlayer: players.0, otherPlayer: players.1)
         if curGameState == gameState.running{ //if no victory condition has been met than begin a new turn with the next player
@@ -102,21 +102,25 @@ class battleState{
     }
     
     /*calls helper functions for all effects within the spellEffects struct so that they can be applied and/or cancel out existing effects to that player/tile*/
-    func applyEffects(spell: spell, caster: player, primaryTile: tile, secondaryTile: tile? = nil, effectedPlayer: player? = nil){
+    func applyEffects(spell: spell, caster: player, primaryTile: inout tile, secondaryTile: tile? = nil, effectedPlayer: player? = nil){
         let effect=spell.effect
         caster.mana-=spell.manaCost
     
-        //see if a player is on the tile that was casted to
-        //if so apply effects to both the tile and the player
+        handleEffect(effect: effect, curTile: &primaryTile)
         
+        if let targetPlayer = effectedPlayer {
+            applyEffectToPlayer(effect: effect, target: targetPlayer)
+        }
         
-        //handleEffect(effect: , curTile: )
+        if var secTile = secondaryTile { //creates mutable version of secondaryTile
+            handleEffect(effect: effect, curTile: &secTile)
+        }
     }
     
     /*for any one given spell effect will call helper functions to apply and/or cancel out all elements of that spell effect*/
     func handleEffect(effect: spellEffect, curTile: inout tile){
         if effect.damage > 0 {
-            let effectiveDamage = applyDamage(to: &curTile, damage: effect.damage)
+            let effectiveDamage = applyDamage(to: curTile, damage: effect.damage)
             if positionCompare(position1: battleStatus.player1.position, position2: curTile.position)==true {
                 battleStatus.player1.health -= effectiveDamage
             }
@@ -173,7 +177,7 @@ class battleState{
         }
     }
     
-    func applyDamage(to tile: inout tile, damage: Int) -> Int{
+    func applyDamage(to tile: tile, damage: Int) -> Int{
         let effectiveDamage=max(0, damage-tile.damageReduction)
         return effectiveDamage //prob want to just apply this directly to the player if occupied
     }
@@ -195,17 +199,17 @@ class battleState{
         for tile in tiles{
             for effect in effects{
                 var mutableTile=tile
-                handleEffect(effect: spellEffect, tile: &mutableTile)
+                handleEffect(effect: effect, curTile: &mutableTile)
             }
         }
     }
     
     func applyAbsorbsNextSpell(to tile: inout tile){
-        tile.absorbsNextSpell = !tile.absorbsNextSpell
+        tile.absorbsNextSpell = true
     }
     
     func applyReflectEffect(tile: inout tile){
-        tile.reflectEffect = !tile.reflectEffect
+        tile.reflectEffect = true
     }
     
     func purifyTarget(from tile: inout tile, elementType: String){
@@ -213,11 +217,11 @@ class battleState{
     }
     
     func applyRestrictVision(to tile: inout tile){
-        tile.restrictVision = !tile.restrictVision
+        tile.restrictVision = true
     }
     
     func applyImmobilize(to tile: inout tile){
-        tile.isImmobalized = !tile.isImmobalized
+        tile.isImmobalized = true
     }
     
     /*function to ensure that the tile the player is moving to is within the grid bounds and then updates
@@ -248,7 +252,7 @@ class battleState{
         } else{return spellTarget.none}
     }
     
-    private func processSpell(context: turnContext){
+    private func processSpell(context: inout turnContext){
         let target=getSpellTarget(primaryTile: context.primaryTile,
                                   currentPlayer: context.currentPlayer,
                                   otherPlayer: context.otherPlayer)
@@ -256,19 +260,19 @@ class battleState{
         case spellTarget.currentPlayer:
             applyEffects(spell: context.selectSpell,
                          caster: context.currentPlayer,
-                         primaryTile: context.primaryTile,
+                         primaryTile: &context.primaryTile,
                          secondaryTile: context.secondaryTile,
                          effectedPlayer: context.currentPlayer)
         case spellTarget.otherPlayer:
             applyEffects(spell: context.selectSpell,
                          caster: context.currentPlayer,
-                         primaryTile: context.primaryTile,
+                         primaryTile: &context.primaryTile,
                          secondaryTile: context.secondaryTile,
                          effectedPlayer: context.otherPlayer)
         case spellTarget.none:
             applyEffects(spell: context.selectSpell,
                          caster: context.currentPlayer,
-                         primaryTile: context.primaryTile,
+                         primaryTile: &context.primaryTile,
                          secondaryTile: context.secondaryTile)
         }
         
