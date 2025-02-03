@@ -30,6 +30,7 @@ class player{
     
     var health: Int
     var mana: Int
+    var damageReduction: Int=0
     var position: position
     var restrictedVision: Bool=false
     var isImmobalized: Bool=false
@@ -43,6 +44,7 @@ class player{
         self.damageDealt=0
         self.health=100
         self.mana=100
+        self.damageReduction=0
         self.position=position
     }
 }

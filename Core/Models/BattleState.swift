@@ -109,7 +109,7 @@ class battleState{
         handleEffect(effect: effect, curTile: &primaryTile)
         
         if let targetPlayer = effectedPlayer {
-            applyEffectToPlayer(effect: effect, target: targetPlayer)
+            handleEffectToPlayer(effect: effect, target: targetPlayer, caster: caster, tile: &primaryTile)
         }
         
         if var secTile = secondaryTile { //creates mutable version of secondaryTile
@@ -117,25 +117,29 @@ class battleState{
         }
     }
     
+    func handleEffectToPlayer(effect: spellEffect, target: player, caster: player, tile: inout tile){
+        target.health-=max(0, effect.damage-target.damageReduction)
+        caster.damageDealt+=max(0, effect.damage-target.damageReduction)
+        if tile.tickDamage>0{
+            target.health-=max(0, tile.tickDamage-target.damageReduction)
+            caster.damageDealt+=max(0,tile.tickDamage-target.damageReduction)
+        }
+        if tile.restrictVision==true{
+            target.restrictedVision=true
+        }
+        if tile.isImmobalized==true{
+            target.isImmobalized=true
+        }
+        
+    }
+    
     /*for any one given spell effect will call helper functions to apply and/or cancel out all elements of that spell effect*/
     func handleEffect(effect: spellEffect, curTile: inout tile){
-        if effect.damage > 0 {
-            let effectiveDamage = applyDamage(to: curTile, damage: effect.damage)
-            if positionCompare(position1: battleStatus.player1.position, position2: curTile.position)==true {
-                battleStatus.player1.health -= effectiveDamage
-            }
-            else{
-                if positionCompare(position1: battleStatus.player2.position, position2: curTile.position)==true {
-                    battleStatus.player2.health -= effectiveDamage
-                }
-            }
-        }
-
         if effect.tickDamage > 0 {
-            applyTickDamage(to: &curTile, tickDamage: effect.tickDamage)
+            curTile.tickDamage+=effect.tickDamage
         }
 
-        if effect.duration > 1 {
+        if effect.duration > 1 { //what to change this approach but not sure to what
             curTile.effects.append(effect)
         }
 
@@ -144,46 +148,29 @@ class battleState{
         }
 
         for chainedEffect in effect.chainedEffects {
-            handleEffect(effect: chainedEffect, curTile: &tile)
+            handleEffect(effect: chainedEffect, curTile: &curTile)
         }
 
-        if !effect.pathEffects.isEmpty {
+        if !effect.pathEffects.isEmpty { //what to edit this so that it uses output from calculate path
             var affectedTiles = [curTile]
             applyPathEffects(to: &affectedTiles, effects: effect.pathEffects)
         }
 
         if effect.absorbsNextSpell {
-            applyAbsorbsNextSpell(to: &curTile)
+            curTile.absorbsNextSpell = true
         }
 
         if effect.reflectEffect {
-            applyReflectEffect(tile: &curTile)
-        }
-
-        if let purifyElement = effect.purifyTarget {
-            purifyTarget(from: &curTile, elementType: purifyElement.rawValue)
+            curTile.reflectEffect = true
         }
 
         if effect.restrictVision {
-            applyRestrictVision(to: &curTile)
+            curTile.restrictVision=true
         }
 
         if effect.immobalized {
-            applyImmobilize(to: &curTile)
+            curTile.isImmobalized=true
         }
-
-        if let passiveEffect = effect.passiveEffect, let player = curTile.occupyingPlayer {
-            passiveEffect(player)
-        }
-    }
-    
-    func applyDamage(to tile: tile, damage: Int) -> Int{
-        let effectiveDamage=max(0, damage-tile.damageReduction)
-        return effectiveDamage //prob want to just apply this directly to the player if occupied
-    }
-    
-    func applyTickDamage(to tile: inout tile, tickDamage: Int){
-        tile.tickDamage+=tickDamage
     }
     
     func applyRemoveEffects(to tile: inout tile, effect: String){
@@ -204,24 +191,8 @@ class battleState{
         }
     }
     
-    func applyAbsorbsNextSpell(to tile: inout tile){
-        tile.absorbsNextSpell = true
-    }
-    
-    func applyReflectEffect(tile: inout tile){
-        tile.reflectEffect = true
-    }
-    
     func purifyTarget(from tile: inout tile, elementType: String){
         tile.localElementTypes.removeAll {$0==elementType}
-    }
-    
-    func applyRestrictVision(to tile: inout tile){
-        tile.restrictVision = true
-    }
-    
-    func applyImmobilize(to tile: inout tile){
-        tile.isImmobalized = true
     }
     
     /*function to ensure that the tile the player is moving to is within the grid bounds and then updates
