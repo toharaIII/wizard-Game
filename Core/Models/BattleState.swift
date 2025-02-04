@@ -105,15 +105,15 @@ class battleState{
     func applyEffects(spell: spell, caster: player, primaryTile: inout tile, secondaryTile: tile? = nil, effectedPlayer: player? = nil){
         let effect=spell.effect
         caster.mana-=spell.manaCost
-    
-        handleEffect(effect: effect, curTile: &primaryTile)
+        
+        if var secTile = secondaryTile { //creates mutable version of secondaryTile
+            handleEffect(effect: effect, curTile: &primaryTile, casterPosition: caster.position, secondaryTile: secTile)
+        } else{
+            handleEffect(effect: effect, curTile: &primaryTile, casterPosition: caster.position)
+        }
         
         if let targetPlayer = effectedPlayer {
             handleEffectToPlayer(effect: effect, target: targetPlayer, caster: caster, tile: &primaryTile)
-        }
-        
-        if var secTile = secondaryTile { //creates mutable version of secondaryTile
-            handleEffect(effect: effect, curTile: &secTile)
         }
     }
     
@@ -134,7 +134,7 @@ class battleState{
     }
     
     /*for any one given spell effect will call helper functions to apply and/or cancel out all elements of that spell effect*/
-    func handleEffect(effect: spellEffect, curTile: inout tile){
+    func handleEffect(effect: spellEffect, curTile: inout tile, casterPosition: position, secondaryTile: tile? = nil){
         if effect.tickDamage > 0 {
             curTile.tickDamage+=effect.tickDamage
         }
@@ -148,12 +148,20 @@ class battleState{
         }
 
         for chainedEffect in effect.chainedEffects {
-            handleEffect(effect: chainedEffect, curTile: &curTile)
+            handleEffect(effect: chainedEffect, curTile: &curTile, casterPosition: casterPosition)
         }
 
         if !effect.pathEffects.isEmpty { //what to edit this so that it uses output from calculate path
-            var affectedTiles = [curTile]
-            applyPathEffects(to: &affectedTiles, effects: effect.pathEffects)
+            let pathPositions=calculatePath(from: casterPosition, to: curTile.position)
+            var affectedTiles: [tile]=[]
+            
+            for pos in pathPositions{
+                if let tile=getTile(at: pos){
+                    affectedTiles.append(tile)
+                }
+            }
+            
+            applyPathEffects(to: &affectedTiles, effects: effect.pathEffects, casterPosition: casterPosition)
         }
 
         if effect.absorbsNextSpell {
@@ -182,11 +190,11 @@ class battleState{
         }
     }
     
-    func applyPathEffects(to tiles: inout [tile], effects: [spellEffect]){
+    func applyPathEffects(to tiles: inout [tile], effects: [spellEffect], casterPosition: position){
         for tile in tiles{
             for effect in effects{
                 var mutableTile=tile
-                handleEffect(effect: effect, curTile: &mutableTile)
+                handleEffect(effect: effect, curTile: &mutableTile, casterPosition: casterPosition)
             }
         }
     }
@@ -310,6 +318,50 @@ class battleState{
     private func endGame(_ result: victoryResult){
         curGameState=gameState.gameOver
         winner=result.winner
-        //we need to update the lifetime stats here as well
+        
+        let player1 = battleStatus.player1
+        let player2 = battleStatus.player2
+        
+        let winningPlayer=result.winner
+        let losingPlayer=(winningPlayer.userId==player1.userId) ? player2 : player1
+        
+        if let winnerBattle=getUserActiveBattle(userId: winningPlayer.userId){
+            let winnerUser=getUser(userId: winningPlayer.userId)
+            winnerUser.wins+=1
+            winnerUser.spellsCast+=winnerBattle.spellsCast
+            winnerUser.damageDealt+=winnerBattle.damageDealt
+            let loserBattle=(winnerBattle.userId == player1.userId) ? player2 : player1
+            winnerUser.damageTaken+=loserBattle.damageDealt
+        }
+        
+        if let loserBattle=getUserActiveBattle(userId: losingPlayer.userId) {
+                let loserUser=getUser(userId: losingPlayer.userId)
+                loserUser.losses+=1
+                loserUser.spellsCast+=loserBattle.spellsCast
+                loserUser.damageDealt+=loserBattle.damageDealt
+                let winnerBattle=(loserBattle.userId == player1.userId) ? player2 : player1
+                loserUser.damageTaken+=winnerBattle.damageDealt
+        }
+        
+        removeActiveBattle(battleId: battleStatus.battleId)
+    }
+    
+    private func getUser(userId: String) -> User{
+        //pulls the user class for a given player via their Id from the larger user database
+        //needs to be build out alongside user database API
+        fatalError("Implimentation needed: retrieve User object for userId: \(userId)")
+    }
+    
+    private func getUserActiveBattle(userId: String) -> player?{
+        let user=getUser(userId: userId)
+        return user.activeBattles[battleStatus.battleId]?.player1.userId == userId ? battleStatus.player1 : battleStatus.player2
+    }
+    
+    private func removeActiveBattle(battleId: String){
+        let player1User=getUser(userId: battleStatus.player1.userId)
+        let player2User=getUser(userId: battleStatus.player2.userId)
+        
+        player1User.activeBattles.removeValue(forKey: battleId)
+        player2User.activeBattles.removeValue(forKey: battleId)
     }
 }
