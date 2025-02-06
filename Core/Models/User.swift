@@ -21,7 +21,7 @@ enum rankings{ //all possible player rankings
 
 /*stores all data for any one player which is only important to the progression of any one battle*/
 class player{
-    let userId: String
+    let userId: UUID
     let userName: String
     
     let battleTome: [spell]
@@ -36,7 +36,7 @@ class player{
     var isImmobalized: Bool=false
     var activeEffects: [spellEffect]=[]
     
-    init(userId: String, userName: String, battleTome: [spell], position: position){
+    init(userId: UUID, userName: String, battleTome: [spell], position: position){
         self.userId=userId
         self.userName=userName
         self.battleTome=battleTome
@@ -52,7 +52,7 @@ class player{
 /*stores all information for any one battle, including that of both players along with information
  regarding the game state and grid, and is how a battle is found in the database*/
 class battleStatus{
-    let battleId: String
+    let battleId: UUID
     let startTime: Date
     
     var player1: player
@@ -60,9 +60,9 @@ class battleStatus{
     var player2: player
     
     var turnNumber: Int
-    var battleState: battleState //reference to the actual battle
+    var battleState: battleState? //reference to the actual battle
     
-    init(battleId: String,
+    init(battleId: UUID,
          startTime: Date,
          player1: player,
          player2: player,
@@ -73,20 +73,19 @@ class battleStatus{
         self.player1 = player1
         self.player2 = player2
         self.turnNumber = turnNumber
-        self.battleState = battleState
     }
 }
 
 /*stores lifetime data for a user such as username, stored and active spells, and lifetime stats aggregated from all games*/
 class User{
-    let id: String
+    let id: UUID
     let userName: String
     
     //spell collection
     var grimoire: [spell] = []
     var battleTome: [spell] = []
     
-    var activeBattles: [String: battleStatus] = [:]//dictionary of current battles
+    var activeBattles: [UUID: battleStatus] = [:]//dictionary of current battles
     
     //battle stats
     var wins: Int = 0
@@ -96,11 +95,11 @@ class User{
     var damageTaken: Int = 0
     var rank: rankings = rankings.AdeptIII
     
-    init(id: String,
+    init(id: UUID,
          userName: String,
          grimore: [spell],
          battleTome: [spell],
-         activeBattles: [String: battleStatus],
+         activeBattles: [UUID: battleStatus],
          wins: Int,
          losses: Int,
          spellsCast: Int,

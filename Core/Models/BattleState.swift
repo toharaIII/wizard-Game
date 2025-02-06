@@ -35,20 +35,22 @@ designed to be a battle manager and hold immediately necessary data for all play
 holds all players in turn order, all spell contexts of all tiles, functions to be applied to players or tiles along with those to progress the battle such as advancing turns and checking win conditions
 */
 class battleState{
+    var battleStatus: battleStatus
+    
     var curGameState: gameState
     var turnOrder: [String]=[]
     var currentPlayerIndex: Int=0
-    let lastMoveTime: Date
+    var lastMoveTime: Date
     
     var tiles: [[tile]]
     var winner: player?
     
-    var battleStatus: battleStatus
-    
-    init(tiles: [[tile]]){
+    init(tiles: [[tile]], battleStatus: battleStatus){
         self.tiles=tiles
+        self.battleStatus=battleStatus
         self.curGameState=gameState.running
         self.turnOrder=[battleStatus.player1.userName, battleStatus.player2.userName].shuffled()
+        self.lastMoveTime=Date()
     }
     
     
@@ -81,7 +83,7 @@ class battleState{
         }
         
         players.0.spellsCast+=1
-        var primaryTile=selectTile(for: players.0)
+        let primaryTile=selectTile(for: players.0)
         
         var context=turnContext(
             currentPlayer: players.0,
@@ -106,7 +108,7 @@ class battleState{
         let effect=spell.effect
         caster.mana-=spell.manaCost
         
-        if var secTile = secondaryTile { //creates mutable version of secondaryTile
+        if let secTile = secondaryTile { //creates mutable version of secondaryTile
             handleEffect(effect: effect, curTile: &primaryTile, casterPosition: caster.position, secondaryTile: secTile)
         } else{
             handleEffect(effect: effect, curTile: &primaryTile, casterPosition: caster.position)
@@ -346,22 +348,44 @@ class battleState{
         removeActiveBattle(battleId: battleStatus.battleId)
     }
     
-    private func getUser(userId: String) -> User{
+    private func getUser(userId: UUID) -> User{
         //pulls the user class for a given player via their Id from the larger user database
         //needs to be build out alongside user database API
         fatalError("Implimentation needed: retrieve User object for userId: \(userId)")
     }
     
-    private func getUserActiveBattle(userId: String) -> player?{
+    private func getUserActiveBattle(userId: UUID) -> player?{
         let user=getUser(userId: userId)
         return user.activeBattles[battleStatus.battleId]?.player1.userId == userId ? battleStatus.player1 : battleStatus.player2
     }
     
-    private func removeActiveBattle(battleId: String){
+    private func removeActiveBattle(battleId: UUID){
         let player1User=getUser(userId: battleStatus.player1.userId)
         let player2User=getUser(userId: battleStatus.player2.userId)
         
         player1User.activeBattles.removeValue(forKey: battleId)
         player2User.activeBattles.removeValue(forKey: battleId)
+    }
+    
+    //IM NOT SURE WE WANT THESE HERE, JUST STUB BUILDS FOR TESTING
+    func getMove(for player: player) -> tile? {
+        print("getMove called - returning nil as stub")
+        return nil  // No movement by default
+    }
+
+    func getSpell(for player: player) -> spell? {
+        print("getSpell called - returning a stub spell")
+        return nil
+    }
+
+    func selectTile(for player: player) -> tile {
+        print("selectTile called - returning a default tile")
+        let defaultPosition=position(x:0, y:0)
+        return tile(position: defaultPosition)
+    }
+
+    func selectOptionalTile(for player: player) -> tile? {
+        print("selectOptionalTile called - returning nil as stub")
+        return nil  // No optional tile by default
     }
 }
