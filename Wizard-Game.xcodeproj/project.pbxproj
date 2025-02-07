@@ -59,6 +59,7 @@
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
 				SpellComponentTests.swift,
+				SpellTests.swift,
 			);
 			target = 4BD11DB42D30A14B00E5D356 /* Wizard-Game iOS */;
 		};
@@ -66,6 +67,7 @@
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
 				SpellComponentTests.swift,
+				SpellTests.swift,
 			);
 			target = 4B9760472D5557AE0013E266 /* WizardGameTests */;
 		};

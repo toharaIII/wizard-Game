@@ -30,11 +30,10 @@ struct spell{
          description: String,
          author: String,
          effect: spellEffect,
-         secondaryTile: Bool,
+         secondaryTile: Bool=false,
          manaCost: Int,
          sourceCode: String,
-         createdAt: Date=Date(),
-         lastModified: Date=Date()){
+         createdAt: Date=Date()){
         self.name=name
         self.description=description
         self.author=author
@@ -43,6 +42,6 @@ struct spell{
         self.manaCost=manaCost
         self.sourceCode=sourceCode
         self.createdAt=createdAt
-        self.lastModified=lastModified
+        self.lastModified=createdAt
     }
 }
