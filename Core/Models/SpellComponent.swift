@@ -13,9 +13,13 @@ enum triggerType{ //all possible ways in which a casted spell can have its effec
     case proximity(radius: Int)
 }
 
-struct position{ //used to store players position on the grid
+struct position: Equatable{ //used to store players position on the grid
     let x: Int
     let y: Int
+    
+    static func == (lhs: position, rhs: position) -> Bool {
+        return lhs.x==rhs.x && lhs.y == rhs.y
+    }
 }
 
 indirect enum spellEffectReference{ //used so that spellEffects can stored chain effects without recurisve call
@@ -32,23 +36,18 @@ func randomTile() -> position { //creates a position struct to a random position
 /*
  creates an efficient path between 2 positions on the grid and returns an array of the positions within said path
  */
-func calculatePath(from start: position, to end: position) -> [position]{
-    var path: [position] = []
-    
-    if start.x != end.x{
-        let range=start.x<end.x ? Array((start.x...end.x)) : (end.x...start.x).reversed()
-        for x in range{
-            path.append(position(x: x, y: start.y))
-        }
+func calculatePath(from start: position, to end: position) -> [position] {
+    var path: [position] = [start]
+    var current = start
+
+    while current.x != end.x || current.y != end.y {
+        let nextX = current.x + (current.x < end.x ? 1 : (current.x > end.x ? -1 : 0))
+        let nextY = current.y + (current.y < end.y ? 1 : (current.y > end.y ? -1 : 0))
+        
+        current = position(x: nextX, y: nextY) // Create a new immutable struct
+        path.append(current)
     }
-    
-    if start.y != end.y{
-        let range=start.y < end.y ? Array((start.y...end.y)) : (end.y...start.y).reversed()
-        for y in range{
-            path.append(position(x: end.x, y: y))
-        }
-    }
-    
+
     return path
 }
 
