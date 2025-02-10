@@ -58,16 +58,20 @@
 		4B9760432D5554790013E266 /* Exceptions for "Tests" folder in "Wizard-Game iOS" target */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
+				BattleStateTests.swift,
 				SpellComponentTests.swift,
 				SpellTests.swift,
+				UserTests.swift,
 			);
 			target = 4BD11DB42D30A14B00E5D356 /* Wizard-Game iOS */;
 		};
 		4B9760522D5557BE0013E266 /* Exceptions for "Tests" folder in "WizardGameTests" target */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
+				BattleStateTests.swift,
 				SpellComponentTests.swift,
 				SpellTests.swift,
+				UserTests.swift,
 			);
 			target = 4B9760472D5557AE0013E266 /* WizardGameTests */;
 		};

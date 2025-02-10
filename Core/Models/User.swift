@@ -67,12 +67,13 @@ class battleStatus{
          player1: player,
          player2: player,
          turnNumber: Int,
-         battleState: battleState){
+         battleState: battleState?=nil){
         self.battleId = battleId
         self.startTime = startTime
         self.player1 = player1
         self.player2 = player2
         self.turnNumber = turnNumber
+        self.battleState = battleState
     }
 }
 
