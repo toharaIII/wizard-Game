@@ -39,6 +39,7 @@ class battleState{
     
     var curGameState: gameState
     var turnOrder: [String]=[]
+    var turnNumber:Int=0
     var currentPlayerIndex: Int=0
     var lastMoveTime: Date
     
@@ -55,6 +56,8 @@ class battleState{
     
     func processTurn(currentPlayer: player){
         guard curGameState == gameState.running else {return}
+        
+        turnNumber+=1
         
         guard let (currentPlayer, otherPlayer)=getCurrentPlayers(currentPlayerName: turnOrder[currentPlayerIndex]) else {return}
         let players=(currentPlayer, otherPlayer)
