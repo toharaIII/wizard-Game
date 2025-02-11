@@ -9,9 +9,14 @@
 /* Begin PBXBuildFile section */
 		4B19739B2D387A11005D5F03 /* SpellComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BD11DEA2D30AD4E00E5D356 /* SpellComponent.swift */; };
 		4B1973A32D388760005D5F03 /* XCTest.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4B1973A12D388741005D5F03 /* XCTest.framework */; };
+		4B2C7AAA2D5BFE6000A3B446 /* GridComponents.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B2C7AA92D5BFE5600A3B446 /* GridComponents.swift */; };
+		4B2C7AAC2D5C033500A3B446 /* PlayerComponents.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B2C7AAB2D5C032A00A3B446 /* PlayerComponents.swift */; };
 		4B88C0412D3DD619000D34DE /* Spell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BD11DEB2D30AD5900E5D356 /* Spell.swift */; };
 		4BE4C3DB2D3EBD810003DC7F /* BattleState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BD11DE92D30AD4600E5D356 /* BattleState.swift */; };
 		4BE9C7152D400CB600193AC1 /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BD11DEC2D30AD6000E5D356 /* User.swift */; };
+		4BFAAB542D5A8E2D005B7590 /* SpellParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BFAAB532D5A8E28005B7590 /* SpellParser.swift */; };
+		4BFAAB562D5A8E3C005B7590 /* ManaCostCalculator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BFAAB552D5A8E32005B7590 /* ManaCostCalculator.swift */; };
+		4BFAAB582D5A8E49005B7590 /* ExecutionSandbox.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BFAAB572D5A8E3F005B7590 /* ExecutionSandbox.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -26,6 +31,8 @@
 
 /* Begin PBXFileReference section */
 		4B1973A12D388741005D5F03 /* XCTest.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XCTest.framework; path = Platforms/iPhoneOS.platform/Developer/Library/Frameworks/XCTest.framework; sourceTree = DEVELOPER_DIR; };
+		4B2C7AA92D5BFE5600A3B446 /* GridComponents.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GridComponents.swift; sourceTree = "<group>"; };
+		4B2C7AAB2D5C032A00A3B446 /* PlayerComponents.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayerComponents.swift; sourceTree = "<group>"; };
 		4B9760482D5557AE0013E266 /* WizardGameTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = WizardGameTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		4BD11DB52D30A14B00E5D356 /* Wizard-Game.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Wizard-Game.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		4BD11DE42D30AD0A00E5D356 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -36,7 +43,6 @@
 		4BD11DEC2D30AD6000E5D356 /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
 		4BD11DED2D30AD6A00E5D356 /* UserManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserManager.swift; sourceTree = "<group>"; };
 		4BD11DEF2D30AD7B00E5D356 /* NetworkManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkManager.swift; sourceTree = "<group>"; };
-		4BD11DF02D30AD8300E5D356 /* PythonInterpreter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PythonInterpreter.swift; sourceTree = "<group>"; };
 		4BD11DF12D30ADF200E5D356 /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		4BD11DF22D30ADF900E5D356 /* Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
 		4BD11DF72D30AE2E00E5D356 /* MainMenuViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainMenuViewController.swift; sourceTree = "<group>"; };
@@ -52,6 +58,9 @@
 		4BD11E012D30AE9900E5D356 /* SpellCardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpellCardView.swift; sourceTree = "<group>"; };
 		4BD11E072D30AEF200E5D356 /* GameConfiguration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameConfiguration.swift; sourceTree = "<group>"; };
 		4BD11E082D30AEFB00E5D356 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
+		4BFAAB532D5A8E28005B7590 /* SpellParser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpellParser.swift; sourceTree = "<group>"; };
+		4BFAAB552D5A8E32005B7590 /* ManaCostCalculator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ManaCostCalculator.swift; sourceTree = "<group>"; };
+		4BFAAB572D5A8E3F005B7590 /* ExecutionSandbox.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExecutionSandbox.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
@@ -182,6 +191,7 @@
 		4BD11DE02D30AA0C00E5D356 /* Core */ = {
 			isa = PBXGroup;
 			children = (
+				4BFAAB502D5A8E04005B7590 /* SwiftCompiler */,
 				4BD11DE62D30AD2A00E5D356 /* Models */,
 				4BD11DE72D30AD3300E5D356 /* Services */,
 				4BD11DE82D30AD3800E5D356 /* Utils */,
@@ -222,6 +232,8 @@
 		4BD11DE62D30AD2A00E5D356 /* Models */ = {
 			isa = PBXGroup;
 			children = (
+				4B2C7AAB2D5C032A00A3B446 /* PlayerComponents.swift */,
+				4B2C7AA92D5BFE5600A3B446 /* GridComponents.swift */,
 				4BD11DEC2D30AD6000E5D356 /* User.swift */,
 				4BD11DEB2D30AD5900E5D356 /* Spell.swift */,
 				4BD11DEA2D30AD4E00E5D356 /* SpellComponent.swift */,
@@ -233,7 +245,6 @@
 		4BD11DE72D30AD3300E5D356 /* Services */ = {
 			isa = PBXGroup;
 			children = (
-				4BD11DF02D30AD8300E5D356 /* PythonInterpreter.swift */,
 				4BD11DEF2D30AD7B00E5D356 /* NetworkManager.swift */,
 				4BD11DED2D30AD6A00E5D356 /* UserManager.swift */,
 			);
@@ -307,6 +318,16 @@
 			children = (
 			);
 			path = Assets.xcassets;
+			sourceTree = "<group>";
+		};
+		4BFAAB502D5A8E04005B7590 /* SwiftCompiler */ = {
+			isa = PBXGroup;
+			children = (
+				4BFAAB572D5A8E3F005B7590 /* ExecutionSandbox.swift */,
+				4BFAAB552D5A8E32005B7590 /* ManaCostCalculator.swift */,
+				4BFAAB532D5A8E28005B7590 /* SpellParser.swift */,
+			);
+			path = SwiftCompiler;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -426,8 +447,13 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				4BFAAB542D5A8E2D005B7590 /* SpellParser.swift in Sources */,
 				4BE4C3DB2D3EBD810003DC7F /* BattleState.swift in Sources */,
 				4B19739B2D387A11005D5F03 /* SpellComponent.swift in Sources */,
+				4B2C7AAA2D5BFE6000A3B446 /* GridComponents.swift in Sources */,
+				4BFAAB582D5A8E49005B7590 /* ExecutionSandbox.swift in Sources */,
+				4B2C7AAC2D5C033500A3B446 /* PlayerComponents.swift in Sources */,
+				4BFAAB562D5A8E3C005B7590 /* ManaCostCalculator.swift in Sources */,
 				4BE9C7152D400CB600193AC1 /* User.swift in Sources */,
 				4B88C0412D3DD619000D34DE /* Spell.swift in Sources */,
 			);

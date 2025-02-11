@@ -36,7 +36,7 @@ final class battleStateTests: XCTestCase{
         }
         
         func testPlayerTakesDamage() {
-            var player = player(userId: UUID(), userName: "Wizard", battleTome: [], position: position(x: 0, y: 0))
+            let player = player(userId: UUID(), userName: "Wizard", battleTome: [], position: position(x: 0, y: 0))
             player.health -= 20
             
             XCTAssertEqual(player.health, 80)
@@ -60,7 +60,7 @@ final class battleStateTests: XCTestCase{
         }
         
         func testUserStatisticsTracking() {
-            var user = User(id: UUID(), userName: "WizardMaster", grimore: [], battleTome: [], activeBattles: [:], wins: 3, losses: 1, spellsCast: 10, damageDealt: 150, damageTaken: 100, rank: .AdeptIII)
+            let user = User(id: UUID(), userName: "WizardMaster", grimore: [], battleTome: [], activeBattles: [:], wins: 3, losses: 1, spellsCast: 10, damageDealt: 150, damageTaken: 100, rank: .AdeptIII)
             user.wins += 1
             user.damageDealt += 30
             

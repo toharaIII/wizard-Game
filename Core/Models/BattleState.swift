@@ -53,19 +53,6 @@ class battleState{
         self.lastMoveTime=Date()
     }
     
-    
-    /*
-     here is a list of all the functions that need to exist inside this class, excluding stuff to send push notificaitons to players
-     function to decide who goes first and then populate the turnOrder array, should also update the currentPlayerIndex to the first Player
-     function to process a turn:
-        add 20 mana to that players mana bar, allow them to move their player to an adjacent space on the grid, and cast 1 spell
-     function to apply the effect(s) of a spell to the player and tile(s) that it is casted on, if it is casted on multiple tiles than things like direct damage need to be divided evenly amongst all tiles the spellEffect is applied to
-        in our case we are going to handle this by calling a smaller funciton handleEffect for each effect in a spell, and apply it to the tile and player if one is there by having each spell effect element be handled by its own function
-     function to queue up the next turn by getting the player object for the next player and calling process turn for that player object
-     function to check fro win conditions
-     we also need to be updating lifetime stats and its probably easiest to do that inside of these functions
-     */
-    
     func processTurn(currentPlayer: player){
         guard curGameState == gameState.running else {return}
         
@@ -100,6 +87,31 @@ class battleState{
             currentPlayerIndex = (currentPlayerIndex+1)%turnOrder.count
             if battleStatus.player1.userName==turnOrder[currentPlayerIndex]{processTurn(currentPlayer: battleStatus.player1)}
             else {processTurn(currentPlayer: battleStatus.player2)}
+        }
+    }
+    
+    private func processSpell(context: inout turnContext){
+        let target=getSpellTarget(primaryTile: context.primaryTile,
+                                  currentPlayer: context.currentPlayer,
+                                  otherPlayer: context.otherPlayer)
+        switch target{
+        case spellTarget.currentPlayer:
+            applyEffects(spell: context.selectSpell,
+                         caster: context.currentPlayer,
+                         primaryTile: &context.primaryTile,
+                         secondaryTile: context.secondaryTile,
+                         effectedPlayer: context.currentPlayer)
+        case spellTarget.otherPlayer:
+            applyEffects(spell: context.selectSpell,
+                         caster: context.currentPlayer,
+                         primaryTile: &context.primaryTile,
+                         secondaryTile: context.secondaryTile,
+                         effectedPlayer: context.otherPlayer)
+        case spellTarget.none:
+            applyEffects(spell: context.selectSpell,
+                         caster: context.currentPlayer,
+                         primaryTile: &context.primaryTile,
+                         secondaryTile: context.secondaryTile)
         }
     }
     
@@ -205,6 +217,14 @@ class battleState{
         tile.localElementTypes.removeAll {$0==elementType}
     }
     
+    
+    
+    
+    
+    
+    
+    
+    
     /*function to ensure that the tile the player is moving to is within the grid bounds and then updates
      tile struct to show that the old tile is unoccupied and new one is*/
     func movePlayer(player: player, to newTile: tile){
@@ -233,45 +253,26 @@ class battleState{
         } else{return spellTarget.none}
     }
     
-    private func processSpell(context: inout turnContext){
-        let target=getSpellTarget(primaryTile: context.primaryTile,
-                                  currentPlayer: context.currentPlayer,
-                                  otherPlayer: context.otherPlayer)
-        switch target{
-        case spellTarget.currentPlayer:
-            applyEffects(spell: context.selectSpell,
-                         caster: context.currentPlayer,
-                         primaryTile: &context.primaryTile,
-                         secondaryTile: context.secondaryTile,
-                         effectedPlayer: context.currentPlayer)
-        case spellTarget.otherPlayer:
-            applyEffects(spell: context.selectSpell,
-                         caster: context.currentPlayer,
-                         primaryTile: &context.primaryTile,
-                         secondaryTile: context.secondaryTile,
-                         effectedPlayer: context.otherPlayer)
-        case spellTarget.none:
-            applyEffects(spell: context.selectSpell,
-                         caster: context.currentPlayer,
-                         primaryTile: &context.primaryTile,
-                         secondaryTile: context.secondaryTile)
-        }
-        
-    }
+    
+    
+    
+    
+    
+    
     
     /*ensures that any called for position is within the bounds of the grid*/
-        func getTile(at position: position) -> tile? {
-            guard position.x >= 0, position.x < tiles.count,
-                  position.y >= 0, position.y < tiles[0].count else { return nil}
-            return tiles[position.x][position.y]
-        }
+    func getTile(at position: position) -> tile? {
+        guard position.x >= 0, position.x < tiles.count,
+                position.y >= 0, position.y < tiles[0].count else { return nil}
+        return tiles[position.x][position.y]
+    }
         
         /*adds an effect to the tiles spellEffect array*/
-        func updateTileEffects(for position: position, with effect: spellEffect){
-            guard var targetTile = getTile(at: position) else { return }
-            targetTile.effects.append(effect)
-            tiles[position.x][position.y] = targetTile
-        }
+    func updateTileEffects(for position: position, with effect: spellEffect){
+        guard var targetTile = getTile(at: position) else { return }
+        targetTile.effects.append(effect)
+        tiles[position.x][position.y] = targetTile
+    }
     
     /*removes all effects from a tile*/
     func clearTileEffects(for position: position) {
@@ -280,22 +281,19 @@ class battleState{
         tiles[position.x][position.y] = targetTile
     }
     
-    func positionCompare(position1: position, position2: position) -> Bool{
-        if position1.x == position2.x && position1.y == position2.y {return true}
-        else {return false}
-    }
+    
+    
+    
+    
     
     /*checks all possible win conditions against existing battleState*/
-    func checkVictory(currentPlayer: player, otherPlayer: player){//} -> victoryResult?{
+    func checkVictory(currentPlayer: player, otherPlayer: player){
         if let result=checkHealthDefeat(currentPlayer: currentPlayer, otherPlayer: otherPlayer){
             endGame(result)
-            //return result
         }
         if let result=checkTimeOut(lastMoveTime: lastMoveTime, currentPlayer: currentPlayer, otherPlayer: otherPlayer){
             endGame(result)
-            //return result
         }
-        //return nil
     }
     
     private func checkHealthDefeat(currentPlayer: player, otherPlayer: player) -> victoryResult?{
@@ -348,12 +346,6 @@ class battleState{
         removeActiveBattle(battleId: battleStatus.battleId)
     }
     
-    private func getUser(userId: UUID) -> User{
-        //pulls the user class for a given player via their Id from the larger user database
-        //needs to be build out alongside user database API
-        fatalError("Implimentation needed: retrieve User object for userId: \(userId)")
-    }
-    
     private func getUserActiveBattle(userId: UUID) -> player?{
         let user=getUser(userId: userId)
         return user.activeBattles[battleStatus.battleId]?.player1.userId == userId ? battleStatus.player1 : battleStatus.player2
@@ -387,5 +379,11 @@ class battleState{
     func selectOptionalTile(for player: player) -> tile? {
         print("selectOptionalTile called - returning nil as stub")
         return nil  // No optional tile by default
+    }
+    
+    private func getUser(userId: UUID) -> User{
+        //pulls the user class for a given player via their Id from the larger user database
+        //needs to be build out alongside user database API
+        fatalError("Implimentation needed: retrieve User object for userId: \(userId)")
     }
 }
