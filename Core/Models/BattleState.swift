@@ -93,6 +93,32 @@ class battleState{
         }
     }
     
+    private func getCurrentPlayers(currentPlayerName: String) -> (player, player)?{
+        if battleStatus.player1.userName==currentPlayerName{
+            return (battleStatus.player1, battleStatus.player2)
+        } else if battleStatus.player2.userName==currentPlayerName{
+            return (battleStatus.player2, battleStatus.player1)
+        } else{return nil}
+    }
+    
+    func movePlayer(player: player, to newTile: tile){
+        guard curGameState == gameState.running else {return}
+        guard var currentTile=getTile(at: player.position) else {return}
+        
+        currentTile.isOccupied=false
+        player.position=newTile.position
+        tiles[newTile.position.x][newTile.position.y].isOccupied=true
+    }
+    
+    private func getSpellTarget(primaryTile: tile, currentPlayer: player, otherPlayer: player, secondaryTile: tile? = nil) -> spellTarget{
+        if positionCompare(position1: primaryTile.position, position2: currentPlayer.position)==true{
+            return spellTarget.currentPlayer
+        }
+        if positionCompare(position1: primaryTile.position, position2: otherPlayer.position)==true{
+            return spellTarget.otherPlayer
+        } else{return spellTarget.none}
+    }
+    
     private func processSpell(context: inout turnContext){
         let target=getSpellTarget(primaryTile: context.primaryTile,
                                   currentPlayer: context.currentPlayer,
@@ -223,46 +249,6 @@ class battleState{
     
     
     
-    
-    
-    
-    
-    
-    /*function to ensure that the tile the player is moving to is within the grid bounds and then updates
-     tile struct to show that the old tile is unoccupied and new one is*/
-    func movePlayer(player: player, to newTile: tile){
-        guard curGameState == gameState.running else {return}
-        guard var currentTile=getTile(at: player.position) else {return}
-        
-        currentTile.isOccupied=false
-        player.position=newTile.position
-        tiles[newTile.position.x][newTile.position.y].isOccupied=true
-    }
-    
-    private func getCurrentPlayers(currentPlayerName: String) -> (player, player)?{
-        if battleStatus.player1.userName==currentPlayerName{
-            return (battleStatus.player1, battleStatus.player2)
-        } else if battleStatus.player2.userName==currentPlayerName{
-            return (battleStatus.player2, battleStatus.player1)
-        } else{return nil}
-    }
-    
-    private func getSpellTarget(primaryTile: tile, currentPlayer: player, otherPlayer: player, secondaryTile: tile? = nil) -> spellTarget{
-        if positionCompare(position1: primaryTile.position, position2: currentPlayer.position)==true{
-            return spellTarget.currentPlayer
-        }
-        if positionCompare(position1: primaryTile.position, position2: otherPlayer.position)==true{
-            return spellTarget.otherPlayer
-        } else{return spellTarget.none}
-    }
-    
-    
-    
-    
-    
-    
-    
-    
     /*ensures that any called for position is within the bounds of the grid*/
     func getTile(at position: position) -> tile? {
         guard position.x >= 0, position.x < tiles.count,
@@ -283,8 +269,6 @@ class battleState{
         targetTile.effects.removeAll()
         tiles[position.x][position.y] = targetTile
     }
-    
-    
     
     
     
