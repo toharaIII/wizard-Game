@@ -93,7 +93,7 @@ class battleState{
         }
     }
     
-    private func getCurrentPlayers(currentPlayerName: String) -> (player, player)?{
+    func getCurrentPlayers(currentPlayerName: String) -> (player, player)?{
         if battleStatus.player1.userName==currentPlayerName{
             return (battleStatus.player1, battleStatus.player2)
         } else if battleStatus.player2.userName==currentPlayerName{

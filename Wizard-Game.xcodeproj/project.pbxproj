@@ -68,6 +68,8 @@
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
 				BattleStateTests.swift,
+				GridComponentsTest.swift,
+				PlayerComponentsTest.swift,
 				SpellComponentTests.swift,
 				SpellTests.swift,
 				UserTests.swift,
@@ -78,6 +80,8 @@
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
 				BattleStateTests.swift,
+				GridComponentsTest.swift,
+				PlayerComponentsTest.swift,
 				SpellComponentTests.swift,
 				SpellTests.swift,
 				UserTests.swift,
