@@ -68,7 +68,7 @@ final class PlayerComponentTests: XCTestCase{
         func testCheckPlayerRelativePosition() {
             // Place player2 adjacent to player1
             player2.position = position(x: 2, y: 1)
-            tiles[2][1].isOccupied = true
+            battleStatus.battleState!.tiles[2][1].isOccupied = true
 
             XCTAssertEqual(spellLibrary.checkPlayerRelativePosition(for: player1, battleStatus: battleStatus, relativeX: 1, relativeY: 0), 2) // Player is present
             XCTAssertEqual(spellLibrary.checkPlayerRelativePosition(for: player1, battleStatus: battleStatus, relativeX: 0, relativeY: 1), 0) // Empty tile
@@ -84,11 +84,11 @@ final class PlayerComponentTests: XCTestCase{
             firestorm.duration = 3
             firestorm.trigger = .delayed(turns: 1)
             
-            tiles[2][1].effects.append(firestorm)
-            XCTAssertEqual(spellLibrary.checkTileRelativePosition(for: tiles[1][1], battleStatus: battleStatus, relativeX: 1, relativeY: 1), 1) // Effect present
+            battleStatus.battleState!.tiles[2][1].effects.append(firestorm)
+            XCTAssertEqual(spellLibrary.checkTileRelativePosition(for: tiles[1][1], battleStatus: battleStatus, relativeX: 1, relativeY: 0), 1) // Effect present
             
             // Mark a tile as occupied
-            tiles[0][1].isOccupied = true
+            battleStatus.battleState!.tiles[0][1].isOccupied = true
             XCTAssertEqual(spellLibrary.checkTileRelativePosition(for: tiles[0][0], battleStatus: battleStatus, relativeX: 0, relativeY: 1), 2) // Occupied
         }
         
@@ -96,13 +96,13 @@ final class PlayerComponentTests: XCTestCase{
             // Place effect and occupation
             let frostTrap = spellEffect(
                 type: .ice,
-                tiles: [position(x: 3, y: 2)]
+                tiles: [position(x: 2, y: 2)]
             )
             frostTrap.immobalized = true
             frostTrap.trigger = .proximity(radius: 1)
             
-            tiles[3][2].effects.append(frostTrap)
-            tiles[3][2].isOccupied = true
-            XCTAssertEqual(spellLibrary.checkEntityAbsolutePosition(battleStatus: battleStatus, absoluteX: 3, absoluteY: 2), 3) // Both effect and player present
+            battleStatus.battleState!.tiles[2][2].effects.append(frostTrap)
+            battleStatus.battleState!.tiles[2][2].isOccupied = true
+            XCTAssertEqual(spellLibrary.checkEntityAbsolutePosition(battleStatus: battleStatus, absoluteX: 2, absoluteY: 2), 3) // Both effect and player present
         }
 }

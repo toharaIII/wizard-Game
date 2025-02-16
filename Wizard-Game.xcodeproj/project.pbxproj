@@ -12,6 +12,11 @@
 		4B2C7AAA2D5BFE6000A3B446 /* GridComponents.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B2C7AA92D5BFE5600A3B446 /* GridComponents.swift */; };
 		4B2C7AAC2D5C033500A3B446 /* PlayerComponents.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B2C7AAB2D5C032A00A3B446 /* PlayerComponents.swift */; };
 		4B88C0412D3DD619000D34DE /* Spell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BD11DEB2D30AD5900E5D356 /* Spell.swift */; };
+		4B9D98FB2D6277A700D0D955 /* SwiftBasicFormat in Frameworks */ = {isa = PBXBuildFile; productRef = 4B9D98FA2D6277A700D0D955 /* SwiftBasicFormat */; };
+		4B9D98FD2D6277A700D0D955 /* SwiftCompilerPlugin in Frameworks */ = {isa = PBXBuildFile; productRef = 4B9D98FC2D6277A700D0D955 /* SwiftCompilerPlugin */; };
+		4B9D98FF2D6277A700D0D955 /* SwiftDiagnostics in Frameworks */ = {isa = PBXBuildFile; productRef = 4B9D98FE2D6277A700D0D955 /* SwiftDiagnostics */; };
+		4B9D99012D6277A700D0D955 /* SwiftIDEUtils in Frameworks */ = {isa = PBXBuildFile; productRef = 4B9D99002D6277A700D0D955 /* SwiftIDEUtils */; };
+		4B9D99032D6277A700D0D955 /* SwiftOperators in Frameworks */ = {isa = PBXBuildFile; productRef = 4B9D99022D6277A700D0D955 /* SwiftOperators */; };
 		4BE4C3DB2D3EBD810003DC7F /* BattleState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BD11DE92D30AD4600E5D356 /* BattleState.swift */; };
 		4BE9C7152D400CB600193AC1 /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BD11DEC2D30AD6000E5D356 /* User.swift */; };
 		4BFAAB542D5A8E2D005B7590 /* SpellParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BFAAB532D5A8E28005B7590 /* SpellParser.swift */; };
@@ -71,6 +76,7 @@
 				GridComponentsTest.swift,
 				PlayerComponentsTest.swift,
 				SpellComponentTests.swift,
+				SpellParserTests.swift,
 				SpellTests.swift,
 				UserTests.swift,
 			);
@@ -83,6 +89,7 @@
 				GridComponentsTest.swift,
 				PlayerComponentsTest.swift,
 				SpellComponentTests.swift,
+				SpellParserTests.swift,
 				SpellTests.swift,
 				UserTests.swift,
 			);
@@ -142,7 +149,12 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				4B9D99032D6277A700D0D955 /* SwiftOperators in Frameworks */,
+				4B9D98FB2D6277A700D0D955 /* SwiftBasicFormat in Frameworks */,
+				4B9D98FF2D6277A700D0D955 /* SwiftDiagnostics in Frameworks */,
 				4B1973A32D388760005D5F03 /* XCTest.framework in Frameworks */,
+				4B9D99012D6277A700D0D955 /* SwiftIDEUtils in Frameworks */,
+				4B9D98FD2D6277A700D0D955 /* SwiftCompilerPlugin in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -378,6 +390,11 @@
 			);
 			name = "Wizard-Game iOS";
 			packageProductDependencies = (
+				4B9D98FA2D6277A700D0D955 /* SwiftBasicFormat */,
+				4B9D98FC2D6277A700D0D955 /* SwiftCompilerPlugin */,
+				4B9D98FE2D6277A700D0D955 /* SwiftDiagnostics */,
+				4B9D99002D6277A700D0D955 /* SwiftIDEUtils */,
+				4B9D99022D6277A700D0D955 /* SwiftOperators */,
 			);
 			productName = "Wizard-Game iOS";
 			productReference = 4BD11DB52D30A14B00E5D356 /* Wizard-Game.app */;
@@ -411,6 +428,9 @@
 			);
 			mainGroup = 4BD11DA72D30A14A00E5D356;
 			minimizedProjectReferenceProxies = 1;
+			packageReferences = (
+				4B9D98F92D6277A700D0D955 /* XCRemoteSwiftPackageReference "swift-syntax" */,
+			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 4BD11DB62D30A14B00E5D356 /* Products */;
 			projectDirPath = "";
@@ -717,6 +737,45 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		4B9D98F92D6277A700D0D955 /* XCRemoteSwiftPackageReference "swift-syntax" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/apple/swift-syntax";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 600.0.1;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		4B9D98FA2D6277A700D0D955 /* SwiftBasicFormat */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 4B9D98F92D6277A700D0D955 /* XCRemoteSwiftPackageReference "swift-syntax" */;
+			productName = SwiftBasicFormat;
+		};
+		4B9D98FC2D6277A700D0D955 /* SwiftCompilerPlugin */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 4B9D98F92D6277A700D0D955 /* XCRemoteSwiftPackageReference "swift-syntax" */;
+			productName = SwiftCompilerPlugin;
+		};
+		4B9D98FE2D6277A700D0D955 /* SwiftDiagnostics */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 4B9D98F92D6277A700D0D955 /* XCRemoteSwiftPackageReference "swift-syntax" */;
+			productName = SwiftDiagnostics;
+		};
+		4B9D99002D6277A700D0D955 /* SwiftIDEUtils */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 4B9D98F92D6277A700D0D955 /* XCRemoteSwiftPackageReference "swift-syntax" */;
+			productName = SwiftIDEUtils;
+		};
+		4B9D99022D6277A700D0D955 /* SwiftOperators */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 4B9D98F92D6277A700D0D955 /* XCRemoteSwiftPackageReference "swift-syntax" */;
+			productName = SwiftOperators;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 4BD11DA82D30A14A00E5D356 /* Project object */;
 }
