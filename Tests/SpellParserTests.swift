@@ -3,43 +3,45 @@ import XCTest
 
 final class SpellParserTests: XCTestCase{
     func testFireballSpell() {
-        let spellCode = "cast fireball()"
+        let spellCode = "fireball(tile: otherplayer.getEntityAbsolutePosition())"
         let result = SpellParser.parseSpell(spellCode)
+        print("parsing spell: ", spellCode)
+        print("result: ", result)
         XCTAssertTrue(result.isValid, "Fireball spell should be valid: \(result.errors)")
     }
 
     func testIcicleSpell() {
-        let spellCode = "cast icicle()"
+        let spellCode = "icicle(tile: otherplayer.getEntityAbsolutePosition())"
         let result = SpellParser.parseSpell(spellCode)
         XCTAssertTrue(result.isValid, "Icicle spell should be valid: \(result.errors)")
     }
 
     func testKindlingDelayedEffect() {
-        let spellCode = "cast kindling()"
+        let spellCode = "kindling(tile: otherplayer.getEntityAbsolutePosition(), turnsToActivate: 2, effects: [])"
         let result = SpellParser.parseSpell(spellCode)
         XCTAssertTrue(result.isValid, "Kindling spell should be valid: \(result.errors)")
     }
 
     func testTeleportSpell() {
-        let spellCode = "cast teleport()"
+        let spellCode = "teleport(from: me.getEntityAbsolutePosition(), to: otherplayer.getEntityAbsolutePosition(), isRandom: false)"
         let result = SpellParser.parseSpell(spellCode)
         XCTAssertTrue(result.isValid, "Teleport spell should be valid: \(result.errors)")
     }
 
     func testMajorWardSpell() {
-        let spellCode = "cast major_ward()"
+        let spellCode = "majorWard(tile: me.getEntityAbsolutePosition())"
         let result = SpellParser.parseSpell(spellCode)
         XCTAssertTrue(result.isValid, "Major Ward spell should be valid: \(result.errors)")
     }
 
     func testDarkShroudSpell() {
-        let spellCode = "cast dark_shroud()"
+        let spellCode = "shroud(tiles: [otherplayer.getEntityAbsolutePosition()], duration: 3)"
         let result = SpellParser.parseSpell(spellCode)
         XCTAssertTrue(result.isValid, "Dark Shroud spell should be valid: \(result.errors)")
     }
     
     func testManaCostBasicSpell() {
-        let spellCode = "cast fireball()"
+        let spellCode = "fire.ball(tile: otherplayer.getEntityAbsolutePosition())"
         let result = SpellParser.parseSpell(spellCode)
         XCTAssertTrue(result.isValid, "Valid spell should not return errors: \(result.errors)")
         
@@ -50,7 +52,7 @@ final class SpellParserTests: XCTestCase{
     func testManaCostWithLoop() {
         let spellCode = """
         for i in 0..<3 {
-            cast fireball()
+            fire.ball(tile: otherplayer.getEntityAbsolutePosition())
         }
         """
         let result = SpellParser.parseSpell(spellCode)
@@ -63,7 +65,7 @@ final class SpellParserTests: XCTestCase{
     func testManaCostWithNesting() {
         let spellCode = """
         if otherplayer.getPlayerHealth() < 50 {
-            cast fireball()
+            fire.ball(tile: otherplayer.getEntityAbsolutePosition())
         }
         """
         let result = SpellParser.parseSpell(spellCode)
@@ -75,9 +77,9 @@ final class SpellParserTests: XCTestCase{
     
     func testManaCostWithMultipleEffects() {
         let spellCode = """
-        cast fireball()
-        cast icicle()
-        cast dark_shroud()
+        fire.ball(tile: otherplayer.getEntityAbsolutePosition())
+        ice.icicle(tile: otherplayer.getEntityAbsolutePosition())
+        dark.shroud(tiles: [otherplayer.getEntityAbsolutePosition()], duration: 3)
         """
         let result = SpellParser.parseSpell(spellCode)
         XCTAssertTrue(result.isValid, "Valid multiple spell cast should not return errors: \(result.errors)")
