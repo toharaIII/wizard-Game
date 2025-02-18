@@ -7,10 +7,23 @@ enum elementType{ //holds all spell class names
     case dark
 }
 
-enum triggerType{ //all possible ways in which a casted spell can have its effects triggered
+enum triggerType: Equatable{ //all possible ways in which a casted spell can have its effects triggered
     case immediate
     case delayed(turns: Int)
     case proximity(radius: Int)
+    
+    static func == (lhs: triggerType, rhs: triggerType) -> Bool {
+        switch (lhs, rhs) {
+        case (.immediate, .immediate):
+            return true
+        case let (.delayed(turns1), .delayed(turns2)):
+            return turns1 == turns2
+        case let (.proximity(radius1), .proximity(radius2)):
+            return radius1 == radius2
+        default:
+            return false
+        }
+    }
 }
 
 indirect enum spellEffectReference{ //used so that spellEffects can stored chain effects without recurisve call
@@ -97,7 +110,7 @@ class spellEffect{
 
 class spellLibrary{
     class fire{
-        func ball(tile: position, spreadTiles: [position]? = nil) -> spellEffect{
+        static func ball(tile: position, spreadTiles: [position]? = nil) -> spellEffect{
             return spellEffect(
                 type: elementType.fire,
                 damage: 50,

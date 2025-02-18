@@ -36,7 +36,7 @@ final class SpellComponentTests: XCTestCase{
         func testFireBall() {
             let tile = position(x: 2, y: 3)
             let spreadTiles = [position(x: 3, y: 3), position(x: 4, y: 3)]
-            let effect = spellLibrary.fire().ball(tile: tile, spreadTiles: spreadTiles)
+            let effect = spellLibrary.fire.ball(tile: tile, spreadTiles: spreadTiles)
             
             XCTAssertEqual(effect.type, elementType.fire)
             XCTAssertEqual(effect.damage, 50)

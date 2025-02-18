@@ -18,10 +18,9 @@
 		4B9D99012D6277A700D0D955 /* SwiftIDEUtils in Frameworks */ = {isa = PBXBuildFile; productRef = 4B9D99002D6277A700D0D955 /* SwiftIDEUtils */; };
 		4B9D99032D6277A700D0D955 /* SwiftOperators in Frameworks */ = {isa = PBXBuildFile; productRef = 4B9D99022D6277A700D0D955 /* SwiftOperators */; };
 		4BE4C3DB2D3EBD810003DC7F /* BattleState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BD11DE92D30AD4600E5D356 /* BattleState.swift */; };
+		4BE90E3A2D63CC4300B9C2CD /* ManaCostCalculator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BE90E392D63CC3900B9C2CD /* ManaCostCalculator.swift */; };
 		4BE9C7152D400CB600193AC1 /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BD11DEC2D30AD6000E5D356 /* User.swift */; };
 		4BFAAB542D5A8E2D005B7590 /* SpellParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BFAAB532D5A8E28005B7590 /* SpellParser.swift */; };
-		4BFAAB562D5A8E3C005B7590 /* ManaCostCalculator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BFAAB552D5A8E32005B7590 /* ManaCostCalculator.swift */; };
-		4BFAAB582D5A8E49005B7590 /* ExecutionSandbox.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BFAAB572D5A8E3F005B7590 /* ExecutionSandbox.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -63,9 +62,8 @@
 		4BD11E012D30AE9900E5D356 /* SpellCardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpellCardView.swift; sourceTree = "<group>"; };
 		4BD11E072D30AEF200E5D356 /* GameConfiguration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameConfiguration.swift; sourceTree = "<group>"; };
 		4BD11E082D30AEFB00E5D356 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
+		4BE90E392D63CC3900B9C2CD /* ManaCostCalculator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ManaCostCalculator.swift; sourceTree = "<group>"; };
 		4BFAAB532D5A8E28005B7590 /* SpellParser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpellParser.swift; sourceTree = "<group>"; };
-		4BFAAB552D5A8E32005B7590 /* ManaCostCalculator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ManaCostCalculator.swift; sourceTree = "<group>"; };
-		4BFAAB572D5A8E3F005B7590 /* ExecutionSandbox.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExecutionSandbox.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
@@ -207,7 +205,7 @@
 		4BD11DE02D30AA0C00E5D356 /* Core */ = {
 			isa = PBXGroup;
 			children = (
-				4BFAAB502D5A8E04005B7590 /* SwiftCompiler */,
+				4BFAAB502D5A8E04005B7590 /* SwiftParser */,
 				4BD11DE62D30AD2A00E5D356 /* Models */,
 				4BD11DE72D30AD3300E5D356 /* Services */,
 				4BD11DE82D30AD3800E5D356 /* Utils */,
@@ -336,14 +334,13 @@
 			path = Assets.xcassets;
 			sourceTree = "<group>";
 		};
-		4BFAAB502D5A8E04005B7590 /* SwiftCompiler */ = {
+		4BFAAB502D5A8E04005B7590 /* SwiftParser */ = {
 			isa = PBXGroup;
 			children = (
-				4BFAAB572D5A8E3F005B7590 /* ExecutionSandbox.swift */,
-				4BFAAB552D5A8E32005B7590 /* ManaCostCalculator.swift */,
+				4BE90E392D63CC3900B9C2CD /* ManaCostCalculator.swift */,
 				4BFAAB532D5A8E28005B7590 /* SpellParser.swift */,
 			);
-			path = SwiftCompiler;
+			path = SwiftParser;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -471,13 +468,12 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				4BE90E3A2D63CC4300B9C2CD /* ManaCostCalculator.swift in Sources */,
 				4BFAAB542D5A8E2D005B7590 /* SpellParser.swift in Sources */,
 				4BE4C3DB2D3EBD810003DC7F /* BattleState.swift in Sources */,
 				4B19739B2D387A11005D5F03 /* SpellComponent.swift in Sources */,
 				4B2C7AAA2D5BFE6000A3B446 /* GridComponents.swift in Sources */,
-				4BFAAB582D5A8E49005B7590 /* ExecutionSandbox.swift in Sources */,
 				4B2C7AAC2D5C033500A3B446 /* PlayerComponents.swift in Sources */,
-				4BFAAB562D5A8E3C005B7590 /* ManaCostCalculator.swift in Sources */,
 				4BE9C7152D400CB600193AC1 /* User.swift in Sources */,
 				4B88C0412D3DD619000D34DE /* Spell.swift in Sources */,
 			);
