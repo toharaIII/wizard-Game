@@ -25,9 +25,27 @@ struct ManaCostCalculator {
 
             if let loop = child.as(ForStmtSyntax.self) {
                 print("   -> Found For Loop")
-                let loopCost = analyzeManaCost(node: Syntax(loop.body), depth: depth * 2)
-                manaCost += loopCost
-                print("   -> Loop cost: \(loopCost), Total manaCost: \(manaCost)")
+
+                var iterationCount = 1 // Default if unknown
+
+                if let rangeExpr = loop.sequence.as(SequenceExprSyntax.self) {
+                    let elements = Array(rangeExpr.elements)
+                    
+                    if elements.count == 3,
+                       let lowerBound = elements[0].as(IntegerLiteralExprSyntax.self)?.literal.text,
+                       let upperBound = elements[2].as(IntegerLiteralExprSyntax.self)?.literal.text,
+                       let lower = Int(lowerBound),
+                       let upper = Int(upperBound) {
+                        iterationCount = upper - lower
+                    }
+                }
+
+                // Compute loop body cost
+                let loopBodyCost = analyzeManaCost(node: Syntax(loop.body), depth: depth * 2)
+                let totalLoopCost = loopBodyCost * iterationCount
+
+                manaCost += totalLoopCost
+                print("   -> Loop cost per iteration: \(loopBodyCost), Iterations: \(iterationCount), Total loop cost: \(totalLoopCost), Total manaCost: \(manaCost)")
             } else if let loop = child.as(WhileStmtSyntax.self) {
                 print("   -> Found While Loop")
                 let loopCost = analyzeManaCost(node: Syntax(loop.body), depth: depth * 2)
